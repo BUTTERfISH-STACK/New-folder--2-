@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
     updateUI();
     initIntelligenceTabs();
     initFileUpload();
+    initGlobeAnimation();
+    initScrollParallax();
 });
 
 // Update Certificates Grid
@@ -1990,3 +1992,66 @@ function loadAISettings() {
 window.addEventListener('load', function() {
     loadAISettings();
 });
+
+// 3D Globe Animation with Mouse Follow
+function initGlobeAnimation() {
+    const globe = document.getElementById('globe');
+    if (!globe) return;
+    
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    
+    document.addEventListener('mousemove', function(e) {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        
+        // Calculate mouse position as percentage from center
+        targetX = ((e.clientX - windowWidth / 2) / windowWidth) * 30; // -15 to 15 degrees
+        targetY = ((e.clientY - windowHeight / 2) / windowHeight) * 30; // -15 to 15 degrees
+    });
+    
+    // Smooth animation loop
+    function animateGlobe() {
+        // Smooth interpolation
+        currentX += (targetX - currentX) * 0.05;
+        currentY += (targetY - currentY) * 0.05;
+        
+        // Apply rotation with perspective
+        globe.style.transform = `perspective(1000px) rotateX(${-currentY}deg) rotateY(${currentX}deg)`;
+        
+        requestAnimationFrame(animateGlobe);
+    }
+    
+    animateGlobe();
+}
+
+// Scroll-based Parallax Animation
+function initScrollParallax() {
+    const parallaxElements = document.querySelectorAll('.parallax-element, .gradient-orb, .floating-element');
+    
+    if (parallaxElements.length === 0) return;
+    
+    window.addEventListener('scroll', function() {
+        const scrollY = window.scrollY;
+        
+        parallaxElements.forEach((el, index) => {
+            const speed = 0.1 + (index * 0.05);
+            const yPos = scrollY * speed;
+            
+            if (el.classList.contains('gradient-orb')) {
+                el.style.transform = `translateY(${yPos * 0.5}px)`;
+            } else if (el.classList.contains('globe')) {
+                // Globe moves opposite to scroll
+                el.style.marginTop = `${scrollY * 0.1}px`;
+            }
+        });
+    });
+    
+    // Add parallax class to existing elements
+    const orbs = document.querySelectorAll('.gradient-orb');
+    orbs.forEach((orb, index) => {
+        orb.style.transition = 'transform 0.1s ease-out';
+    });
+}
