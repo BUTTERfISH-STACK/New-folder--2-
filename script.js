@@ -130,6 +130,19 @@ function showSection(sectionId) {
 }
 
 // CV Builder Functions
+// Template Selection
+let selectedTemplate = 'modern';
+
+function selectTemplate(template) {
+    selectedTemplate = template;
+    document.querySelectorAll('.template-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    document.querySelector(`[data-template="${template}"]`).classList.add('active');
+    updateCVPreview();
+    saveCVData();
+}
+
 function nextCVStep() {
     if (validateCurrentStep()) {
         if (state.currentCVStep < 5) {
@@ -245,6 +258,9 @@ function saveCVData() {
         });
     });
     
+    // Template
+    state.cvData.template = selectedTemplate;
+    
     // Update ATS score
     updateATSScore();
     
@@ -321,6 +337,15 @@ function updateATSScore() {
 
 function updateCVPreview() {
     const personal = state.cvData.personal;
+    
+    // Update preview element with template class
+    const preview = document.getElementById('cvPreview');
+    if (preview) {
+        // Remove all template classes
+        preview.classList.remove('modern', 'classic', 'executive', 'technical', 'creative', 'graduate');
+        // Add selected template class
+        preview.classList.add(selectedTemplate);
+    }
     
     // Update preview elements
     const previewName = document.querySelector('.preview-name');
