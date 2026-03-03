@@ -1,6 +1,267 @@
 // Vellon - Premium AI Career Platform JavaScript
 
-// State Management
+// Course Data - Enhanced for Production
+const courseData = {
+    'ai-foundations': {
+        id: 'ai-foundations',
+        title: 'AI Foundations',
+        subtitle: 'Master the fundamentals of Artificial Intelligence',
+        description: 'Understand the fundamentals of AI, machine learning, and how to leverage AI tools for business transformation.',
+        icon: '🧠',
+        badge: 'Module 1',
+        badgeColor: '#8b5cf6',
+        duration: '8 Hours',
+        lessons: 12,
+        difficulty: 'Beginner',
+        rating: 4.8,
+        students: 2847,
+        instructor: {
+            name: 'Dr. Sarah Chen',
+            title: 'AI Research Scientist',
+            avatar: '👩‍🔬'
+        },
+        prerequisites: ['Basic computer skills', 'No programming experience required'],
+        learningOutcomes: [
+            'Understand core AI and ML concepts',
+            'Identify AI opportunities in business',
+            'Evaluate AI tools and solutions',
+            'Make informed decisions about AI adoption'
+        ],
+        modules: [
+            { 
+                id: 1, 
+                title: 'Introduction to AI', 
+                completed: false,
+                duration: '45 min',
+                content: `<h2>Welcome to AI Foundations</h2>
+<p>Artificial Intelligence (AI) is transforming industries across the globe. In this module, you'll learn what AI is, its history, and why it matters for your career.</p>
+
+<h3>What is Artificial Intelligence?</h3>
+<p>AI refers to computer systems that can perform tasks that typically require human intelligence. These include:</p>
+<ul>
+<li>Visual perception and image recognition</li>
+<li>Speech recognition and natural language processing</li>
+<li>Decision-making and problem-solving</li>
+<li>Learning from data and improving over time</li>
+</ul>
+
+<h3>The History of AI</h3>
+<p>AI has evolved significantly since the 1950s:</p>
+<ul>
+<li><strong>1950s-1960s:</strong> Early AI research and symbolic AI</li>
+<li><strong>1980s:</strong> Expert systems and machine learning emergence</li>
+<li><strong>2010s:</strong> Deep learning revolution</li>
+<li><strong>2020s:</strong> Large Language Models and generative AI</li>
+</ul>
+
+<h3>Why AI Matters Now</h3>
+<p>The AI market is projected to reach $1.8 trillion by 2030. Key reasons to learn AI:</p>
+<ul>
+<li>Automation of repetitive tasks</li>
+<li>Data-driven decision making</li>
+<li>New product and service possibilities</li>
+<li>Competitive advantage in any industry</li>
+</ul>`,
+                quiz: {
+                    questions: [
+                        { q: 'What year was the term "Artificial Intelligence" first coined?', options: ['1956', '1965', '1980', '1997'], correct: 0 },
+                        { q: 'Which of these is NOT a typical AI capability?', options: ['Visual perception', 'Flying without wings', 'Speech recognition', 'Decision-making'], correct: 1 },
+                        { q: 'What sparked the deep learning revolution in the 2010s?', options: ['Better algorithms', 'More data and compute power', 'Government funding', 'Lower costs'], correct: 1 }
+                    ]
+                }
+            },
+            { 
+                id: 2, 
+                title: 'Machine Learning Basics', 
+                completed: false,
+                duration: '1 hour',
+                content: `<h2>Machine Learning Fundamentals</h2>
+<p>Machine Learning (ML) is a subset of AI that enables systems to learn from data without being explicitly programmed.</p>
+
+<h3>Types of Machine Learning</h3>
+<ul>
+<li><strong>Supervised Learning:</strong> Learning from labeled data (e.g., spam detection)</li>
+<li><strong>Unsupervised Learning:</strong> Finding patterns in unlabeled data (e.g., customer segmentation)</li>
+<li><strong>Reinforcement Learning:</strong> Learning through trial and error (e.g., game-playing AI)</li>
+</ul>
+
+<h3>Common ML Algorithms</h3>
+<ul>
+<li>Linear Regression - for prediction</li>
+<li>Decision Trees - for classification</li>
+<li>Random Forests - ensemble methods</li>
+<li>Neural Networks - for complex patterns</li>
+</ul>
+
+<h3>Real-World Applications</h3>
+<p>ML powers many everyday applications:</p>
+<ul>
+<li>Recommendation systems (Netflix, Amazon)</li>
+<li>Fraud detection in banking</li>
+<li>Medical diagnosis assistance</li>
+<li>Self-driving cars</li>
+</ul>`,
+                quiz: {
+                    questions: [
+                        { q: 'What type of ML uses labeled data?', options: ['Supervised Learning', 'Unsupervised Learning', 'Reinforcement Learning', 'None'], correct: 0 },
+                        { q: 'Which algorithm is best for prediction tasks?', options: ['Linear Regression', 'Decision Tree', 'Neural Network', 'All work'], correct: 3 }
+                    ]
+                }
+            },
+            { 
+                id: 3, 
+                title: 'Neural Networks', 
+                completed: false,
+                duration: '1.5 hours',
+                content: `<h2>Understanding Neural Networks</h2>
+<p>Neural networks are computing systems inspired by biological neural networks in the brain.</p>
+
+<h3>How Neural Networks Work</h3>
+<p>A neural network consists of:</p>
+<ul>
+<li><strong>Input Layer:</strong> Receives the data</li>
+<li><strong>Hidden Layers:</strong> Process the data</li>
+<li><strong>Output Layer:</strong> Produces the result</li>
+</ul>
+
+<h3>Deep Learning</h3>
+<p>Deep learning uses neural networks with many hidden layers to solve complex problems:</p>
+<ul>
+<li>Image and video recognition</li>
+<li>Natural language processing</li>
+<li>Speech synthesis and translation</li>
+<li>Generative AI (ChatGPT, DALL-E)</li>
+</ul>`,
+                quiz: {
+                    questions: [
+                        { q: 'What is a neural network inspired by?', options: ['Computer circuits', 'Biological brains', 'Mathematical equations', 'Statistics'], correct: 1 }
+                    ]
+                }
+            },
+            { 
+                id: 4, 
+                title: 'AI in Business', 
+                completed: false,
+                duration: '1 hour',
+                content: `<h2>AI for Business Transformation</h2>
+<p>Learn how companies are leveraging AI to transform their operations and create competitive advantages.</p>
+
+<h3>Business Applications of AI</h3>
+<ul>
+<li><strong>Customer Service:</strong> AI chatbots and virtual assistants</li>
+<li><strong>Marketing:</strong> Personalization and predictive analytics</li>
+<li><strong>Operations:</strong> Process automation and optimization</li>
+<li><strong>HR:</strong> Talent acquisition and employee engagement</li>
+</ul>
+
+<h3>Implementing AI in Your Business</h3>
+<ol>
+<li>Identify high-impact use cases</li>
+<li>Assess data readiness</li>
+<li>Start with pilot projects</li>
+<li>Scale based on results</li>
+</ol>
+
+<h3>AI Ethics and Governance</h3>
+<p>Important considerations:</p>
+<ul>
+<li>Data privacy and security</li>
+<li>Bias in AI systems</li>
+<li>Transparency and explainability</li>
+<li>Regulatory compliance</li>
+</ul>`,
+                quiz: {
+                    questions: [
+                        { q: 'What should be the first step in implementing AI?', options: ['Buy AI software', 'Identify use cases', 'Hire data scientists', 'Collect all data'], correct: 1 }
+                    ]
+                }
+            }
+        ]
+    },
+    'ai-productivity': {
+        id: 'ai-productivity',
+        title: 'AI Productivity Tools',
+        subtitle: '10x your productivity with AI assistants',
+        description: 'Master AI-powered tools to 10x your productivity. Learn ChatGPT, Claude, and other cutting-edge AI assistants.',
+        icon: '⚡',
+        badge: 'Module 2',
+        badgeColor: '#06b6d4',
+        duration: '6 Hours',
+        lessons: 10,
+        difficulty: 'Intermediate',
+        rating: 4.9,
+        students: 3421,
+        prerequisites: ['Basic computer skills', 'Willingness to learn new tools'],
+        learningOutcomes: [
+            'Master ChatGPT for professional tasks',
+            'Use Claude for complex analysis',
+            'Automate repetitive workflows',
+            'Integrate AI into daily work'
+        ],
+        modules: [
+            { id: 1, title: 'ChatGPT Mastery', completed: false, duration: '1 hour', content: `<h2>Mastering ChatGPT</h2><p>Learn to use ChatGPT effectively for professional tasks including writing, coding, and analysis.</p><h3>Key Techniques</h3><ul><li><strong>Prompt Engineering:</strong> Write clear, specific prompts</li><li><strong>Context Setting:</strong> Provide background information</li><li><strong>Iterative Refinement:</strong> Build on AI responses</li></ul><h3>Use Cases</h3><ul><li>Drafting emails and documents</li><li>Brainstorming ideas</li><li>Code debugging and explanation</li><li>Learning new concepts</li></ul>`, quiz: { questions: [{ q: 'What improves ChatGPT responses?', options: ['Longer prompts', 'Clearer prompts', 'More questions', 'Faster typing'], correct: 1 }] }},
+            { id: 2, title: 'Claude & Other LLMs', completed: false, duration: '45 min', content: `<h2>Exploring Other AI Assistants</h2><p>Claude, Gemini, and other LLMs offer unique capabilities for different use cases.</p>`, quiz: { questions: [{ q: 'What is Claude known for?', options: ['Speed', 'Long context handling', 'Images', 'Voice'], correct: 1 }] }},
+            { id: 3, title: 'AI Writing Tools', completed: false, duration: '1 hour', content: `<h2>AI-Powered Writing</h2><p>Transform your writing with AI assistants for emails, reports, and creative content.</p>`, quiz: { questions: [{ q: 'Which tool is best for long-form content?', options: ['ChatGPT', 'Claude', 'Both work', 'Neither'], correct: 2 }] }},
+            { id: 4, title: 'Automation with AI', completed: false, duration: '1.5 hours', content: `<h2>Automating Workflows</h2><p>Use AI to automate repetitive tasks and streamline your work processes.</p>`, quiz: { questions: [{ q: 'What can be automated with AI?', options: ['Everything', 'Repetitive tasks', 'Creative work', 'Nothing'], correct: 1 }] }}
+        ]
+    },
+    'digital-products': {
+        id: 'digital-products',
+        title: 'Building Digital Products',
+        subtitle: 'From idea to launch in weeks',
+        description: 'Learn to build and launch digital products. From idea to MVP in weeks, not months.',
+        icon: '💼',
+        badge: 'Module 3',
+        badgeColor: '#10b981',
+        duration: '10 Hours',
+        lessons: 15,
+        difficulty: 'Advanced',
+        rating: 4.7,
+        students: 1893,
+        prerequisites: ['Basic computer skills', 'Entrepreneurial mindset'],
+        learningOutcomes: [
+            'Validate product ideas quickly',
+            'Build MVPs without coding',
+            'Launch and iterate products',
+            'Scale digital businesses'
+        ],
+        modules: [
+            { id: 1, title: 'Product Ideation', completed: false, duration: '1.5 hours', content: `<h2>Finding Your Product Idea</h2><p>Learn proven methods to identify and validate profitable digital product opportunities.</p>`, quiz: { questions: [{ q: 'What is a minimum viable product?', options: ['Cheap product', 'Basic working version', 'Full product', 'Prototype'], correct: 1 }] }},
+            { id: 2, title: 'MVP Development', completed: false, duration: '2 hours', content: `<h2>Building Your MVP</h2><p>Create a minimum viable product to test your hypothesis quickly and cost-effectively.</p>`, quiz: { questions: [{ q: 'MVP stands for?', options: ['Most Valuable Product', 'Minimum Viable Product', 'Market Validated Product', 'Minimum Value Proposition'], correct: 1 }] }},
+            { id: 3, title: 'No-Code Tools', completed: false, duration: '2.5 hours', content: `<h2>No-Code Revolution</h2><p>Build fully functional products without writing a single line of code using powerful no-code platforms.</p>`, quiz: { questions: [{ q: 'Can no-code tools build complex apps?', options: ['No', 'Only simple ones', 'Yes, many can', 'Only with coding'], correct: 2 }] }},
+            { id: 4, title: 'Launch Strategy', completed: false, duration: '2 hours', content: `<h2>Launching Your Product</h2><p>Execute a successful product launch to attract your first customers and generate revenue.</p>`, quiz: { questions: [{ q: 'What is product-market fit?', options: ['Perfect product', 'Product customers want', 'Best price', 'Most features'], correct: 1 }] }}
+        ]
+    },
+    'future-skills': {
+        id: 'future-skills',
+        title: 'Future-Proof Tech Skills',
+        subtitle: 'Skills that matter in 2026 and beyond',
+        description: 'Stay ahead with skills that will matter in 2026 and beyond. No-code, automation, and emerging technologies.',
+        icon: '🔮',
+        badge: 'Module 4',
+        badgeColor: '#f59e0b',
+        duration: '8 Hours',
+        lessons: 12,
+        difficulty: 'Intermediate',
+        rating: 4.8,
+        students: 2156,
+        prerequisites: ['Basic technology skills', 'Openness to new tools'],
+        learningOutcomes: [
+            'Master no-code development',
+            'Build automation workflows',
+            'Leverage emerging technologies',
+            'Stay competitive in AI era'
+        ],
+        modules: [
+            { id: 1, title: 'No-Code Revolution', completed: false, duration: '2 hours', content: `<h2>The No-Code Movement</h2><p>No-code platforms are democratizing software development. Learn to build apps without programming.</p>`, quiz: { questions: [{ q: 'No-code is for:', options: ['Only developers', 'Everyone', 'Only large companies', 'Nobody'], correct: 1 }] }},
+            { id: 2, title: 'Automation Skills', completed: false, duration: '2 hours', content: `<h2>Workplace Automation</h2><p>Automate repetitive tasks and focus on high-value work using modern automation tools.</p>`, quiz: { questions: [{ q: 'Zapier connects:', options: ['Only emails', 'Apps and services', 'Nothing', 'Hardware'], correct: 1 }] }},
+            { id: 3, title: 'Remote Work Tools', completed: false, duration: '1.5 hours', content: `<h2>Remote Collaboration</h2><p>Master tools and techniques for effective remote work in the digital age.</p>`, quiz: { questions: [{ q: 'Async communication means:', options: ['Same time', 'Different time', 'No communication', 'In-person'], correct: 1 }] }},
+            { id: 4, title: '2026 Tech Trends', completed: false, duration: '1.5 hours', content: `<h2>Emerging Technologies</h2><p>Stay ahead by understanding and preparing for the technologies shaping 2026 and beyond.</p>`, quiz: { questions: [{ q: 'Which is NOT an emerging tech trend?', options: ['AI agents', 'VR/AR', 'Typewriters', 'IoT'], correct: 2 }] }}
+        ]
+    }
+};
+
+// State Management - Updated with enhanced courses
 const state = {
     currentSection: 'home',
     cvData: {
@@ -12,47 +273,15 @@ const state = {
     },
     currentCVStep: 1,
     user: null,
-    courses: {
-        'ai-foundations': {
-            title: 'AI Foundations',
-            modules: [
-                { id: 1, title: 'Introduction to AI', completed: false },
-                { id: 2, title: 'Machine Learning Basics', completed: false },
-                { id: 3, title: 'Neural Networks', completed: false },
-                { id: 4, title: 'AI in Business', completed: false }
-            ]
-        },
-        'ai-productivity': {
-            title: 'AI Productivity Tools',
-            modules: [
-                { id: 1, title: 'ChatGPT Mastery', completed: false },
-                { id: 2, title: 'Claude & Other LLMs', completed: false },
-                { id: 3, title: 'AI Writing Tools', completed: false },
-                { id: 4, title: 'Automation with AI', completed: false }
-            ]
-        },
-        'digital-products': {
-            title: 'Building Digital Products',
-            modules: [
-                { id: 1, title: 'Product Ideation', completed: false },
-                { id: 2, title: 'MVP Development', completed: false },
-                { id: 3, title: 'No-Code Tools', completed: false },
-                { id: 4, title: 'Launch Strategy', completed: false }
-            ]
-        },
-        'future-skills': {
-            title: 'Future-Proof Tech Skills',
-            modules: [
-                { id: 1, title: 'No-Code Revolution', completed: false },
-                { id: 2, title: 'Automation Skills', completed: false },
-                { id: 3, title: 'Remote Work Tools', completed: false },
-                { id: 4, title: '2026 Tech Trends', completed: false }
-            ]
-        }
-    },
+    courses: courseData,
     enrolledCourses: [],
-    currentLesson: { course: null, moduleIndex: 0 },
-    certificates: []
+    currentLesson: { course: null, moduleIndex: 0, quizAnswers: [] },
+    certificates: [],
+    courseFilters: {
+        search: '',
+        difficulty: 'all',
+        category: 'all'
+    }
 };
 
 // Initialize
@@ -62,7 +291,99 @@ document.addEventListener('DOMContentLoaded', function() {
     updateUI();
     initIntelligenceTabs();
     initFileUpload();
+    initCourses();
 });
+
+// Initialize Courses
+function initCourses() {
+    // Initialize coursesGrid if exists
+    const coursesGrid = document.getElementById('coursesGrid');
+    if (coursesGrid) {
+        renderFilteredCourses();
+    }
+    
+    // Initialize certificate grid
+    updateCertificatesGrid();
+}
+
+// Update Certificates Grid
+function updateCertificatesGrid() {
+    const grid = document.getElementById('certificatesGrid');
+    if (!grid) return;
+    
+    if (state.certificates.length === 0) {
+        grid.innerHTML = `
+            <div class="certificate-preview glass-card">
+                <div class="certificate-content">
+                    <div class="cert-header">
+                        <div class="cert-logo">✦ Vellon</div>
+                        <div class="cert-title">Certificate of Completion</div>
+                    </div>
+                    <div class="cert-body">
+                        <p class="cert-presented">This is to certify that</p>
+                        <h2 class="cert-name" id="certName">Your Name</h2>
+                        <p class="cert-course">has successfully completed</p>
+                        <h3 class="cert-course-name">AI & Tech Entrepreneur Course</h3>
+                        <p class="cert-date" id="certDate">March 2026</p>
+                    </div>
+                    <div class="cert-footer">
+                        <div class="cert-signature">
+                            <div class="signature-line"></div>
+                            <span>Program Director</span>
+                        </div>
+                        <div class="cert-id">
+                            <span id="certIdDisplay">ID: VEL-2026-XXXXX</span>
+                            <div class="qr-placeholder">⬜</div>
+                        </div>
+                    </div>
+                    <div class="cert-badge">VERIFIED</div>
+                </div>
+                <div class="cert-actions">
+                    <button class="btn-gold" onclick="downloadCertificate()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        Download PDF
+                    </button>
+                </div>
+            </div>
+        `;
+    } else {
+        // Show earned certificates
+        grid.innerHTML = state.certificates.map(cert => `
+            <div class="certificate-preview glass-card">
+                <div class="certificate-content">
+                    <div class="cert-header">
+                        <div class="cert-logo">✦ Vellon</div>
+                        <div class="cert-title">Certificate of Completion</div>
+                    </div>
+                    <div class="cert-body">
+                        <p class="cert-presented">This is to certify that</p>
+                        <h2 class="cert-name">${state.cvData.personal.name || 'Student'}</h2>
+                        <p class="cert-course">has successfully completed</p>
+                        <h3 class="cert-course-name">${cert.courseName}</h3>
+                        <p class="cert-date">${new Date(cert.completedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                    </div>
+                    <div class="cert-footer">
+                        <div class="cert-signature">
+                            <div class="signature-line"></div>
+                            <span>Program Director</span>
+                        </div>
+                        <div class="cert-id">
+                            <span>ID: ${cert.certId}</span>
+                            <div class="qr-placeholder">⬜</div>
+                        </div>
+                    </div>
+                    <div class="cert-badge">VERIFIED</div>
+                </div>
+                <div class="cert-actions">
+                    <button class="btn-gold" onclick="downloadCertificate()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        Download
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+}
 
 // Section Navigation
 function showSection(sectionId) {
@@ -668,10 +989,14 @@ function downloadCV() {
     showToast('CV downloaded as PDF!');
 }
 
-// Course Functions
+// Course Functions - Enhanced for Production
 function startCourse(courseId) {
+    const course = state.courses[courseId];
+    if (!course) return;
+    
     state.currentLesson.course = courseId;
     state.currentLesson.moduleIndex = 0;
+    state.currentLesson.quizAnswers = [];
     
     // Enroll if not already enrolled
     if (!state.enrolledCourses.includes(courseId)) {
@@ -688,20 +1013,36 @@ function updateCourseInterface() {
     const course = state.courses[state.currentLesson.course];
     if (!course) return;
     
-    // Update course title
+    // Update course title and metadata
     const titleEl = document.getElementById('currentCourseTitle');
     if (titleEl) titleEl.textContent = course.title;
     
-    // Update modules list
+    const subtitleEl = document.getElementById('currentCourseSubtitle');
+    if (subtitleEl) subtitleEl.textContent = course.subtitle || '';
+    
+    // Update modules list with rich content
     const modulesList = document.getElementById('modulesList');
     if (modulesList) {
-        modulesList.innerHTML = course.modules.map((module, index) => `
-            <div class="module-item ${index <= state.currentLesson.moduleIndex ? 'active' : 'locked'}" 
-                 onclick="selectModule(${index})">
-                <span class="module-icon">${module.completed ? '✅' : '📚'}</span>
-                <span class="module-title">${module.title}</span>
-            </div>
-        `).join('');
+        modulesList.innerHTML = course.modules.map((module, index) => {
+            const isCompleted = module.completed;
+            const isActive = index === state.currentLesson.moduleIndex;
+            const isUnlocked = index <= state.currentLesson.moduleIndex;
+            
+            return `
+                <div class="module-item ${isActive ? 'active' : ''} ${isUnlocked ? 'unlocked' : 'locked'}" 
+                     onclick="${isUnlocked ? `selectModule(${index})` : ''}">
+                    <div class="module-status">
+                        ${isCompleted ? '<span class="status-icon completed">✓</span>' : 
+                          isActive ? '<span class="status-icon playing">▶</span>' : 
+                          '<span class="status-icon locked">🔒</span>'}
+                    </div>
+                    <div class="module-info">
+                        <span class="module-title">${module.title}</span>
+                        <span class="module-duration">${module.duration || '15 min'}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
     
     // Update current lesson
@@ -709,12 +1050,23 @@ function updateCourseInterface() {
     if (module) {
         const lessonNumber = document.getElementById('lessonNumber');
         const lessonTitle = document.getElementById('lessonTitle');
+        const lessonText = document.getElementById('lessonText');
         const prevBtn = document.getElementById('prevLessonBtn');
         const nextBtn = document.getElementById('nextLessonBtn');
         
-        if (lessonNumber) lessonNumber.textContent = `Module ${state.currentLesson.moduleIndex + 1}`;
+        if (lessonNumber) lessonNumber.textContent = `Module ${state.currentLesson.moduleIndex + 1} of ${course.modules.length}`;
         if (lessonTitle) lessonTitle.textContent = module.title;
+        if (lessonText) lessonText.innerHTML = module.content || '<p>Content coming soon...</p>';
+        
         if (prevBtn) prevBtn.style.display = state.currentLesson.moduleIndex > 0 ? 'block' : 'none';
+        
+        // Update next button text
+        if (nextBtn) {
+            const isLastModule = state.currentLesson.moduleIndex === course.modules.length - 1;
+            nextBtn.innerHTML = isLastModule ? 
+                '<span>Complete Course</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' :
+                '<span>Mark Complete & Next</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+        }
         
         // Calculate and update progress
         const completedCount = course.modules.filter(m => m.completed).length;
@@ -725,12 +1077,104 @@ function updateCourseInterface() {
         
         if (progressFill) progressFill.style.width = progress + '%';
         if (courseProgress) courseProgress.textContent = progress + '%';
+        
+        // Show quiz if module has quiz
+        updateQuizSection(module);
     }
+}
+
+function updateQuizSection(module) {
+    const quizContainer = document.getElementById('quizSection');
+    if (!quizContainer) return;
+    
+    if (module.quiz && module.quiz.questions && module.quiz.questions.length > 0) {
+        const currentAnswers = state.currentLesson.quizAnswers || [];
+        
+        quizContainer.innerHTML = `
+            <div class="quiz-section">
+                <h3>📝 Knowledge Check</h3>
+                <p>Test your understanding of this module</p>
+                <div class="quiz-questions">
+                    ${module.quiz.questions.map((q, qIndex) => `
+                        <div class="quiz-question" data-question="${qIndex}">
+                            <p class="quiz-q-text">${qIndex + 1}. ${q.q}</p>
+                            <div class="quiz-options">
+                                ${q.options.map((opt, oIndex) => `
+                                    <label class="quiz-option ${currentAnswers[qIndex] === oIndex ? 'selected' : ''}">
+                                        <input type="radio" name="q${qIndex}" value="${oIndex}" 
+                                            ${currentAnswers[qIndex] === oIndex ? 'checked' : ''}
+                                            onchange="answerQuiz(${qIndex}, ${oIndex})">
+                                        <span class="option-text">${opt}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <button class="btn-glass" onclick="submitQuiz()">Submit Answers</button>
+            </div>
+        `;
+        quizContainer.style.display = 'block';
+    } else {
+        quizContainer.style.display = 'none';
+    }
+}
+
+function answerQuiz(questionIndex, answerIndex) {
+    state.currentLesson.quizAnswers[questionIndex] = answerIndex;
+    
+    // Update UI
+    const questionEl = document.querySelector(`[data-question="${questionIndex}"]`);
+    if (questionEl) {
+        questionEl.querySelectorAll('.quiz-option').forEach((opt, idx) => {
+            opt.classList.toggle('selected', idx === answerIndex);
+        });
+    }
+}
+
+function submitQuiz() {
+    const course = state.courses[state.currentLesson.course];
+    const module = course.modules[state.currentLesson.moduleIndex];
+    
+    if (!module.quiz) return;
+    
+    const answers = state.currentLesson.quizAnswers;
+    let correct = 0;
+    
+    module.quiz.questions.forEach((q, idx) => {
+        if (answers[idx] === q.correct) correct++;
+    });
+    
+    const score = Math.round((correct / module.quiz.questions.length) * 100);
+    
+    if (score >= 70) {
+        showToast(`🎯 Quiz Score: ${score}% - Great job!`);
+    } else {
+        showToast(`📚 Quiz Score: ${score}% - Review the material and try again!`);
+    }
+    
+    // Show results
+    const quizContainer = document.getElementById('quizSection');
+    quizContainer.innerHTML = `
+        <div class="quiz-results">
+            <h3>📊 Quiz Results</h3>
+            <div class="score-circle ${score >= 70 ? 'passed' : 'failed'}">
+                <span class="score-value">${score}%</span>
+                <span class="score-label">${score >= 70 ? 'Passed!' : 'Try Again'}</span>
+            </div>
+            <p>You got ${correct} out of ${module.quiz.questions.length} questions correct.</p>
+            ${score >= 70 ? 
+                '<button class="btn-gold" onclick="nextLesson()">Continue to Next Module</button>' :
+                '<button class="btn-glass" onclick="updateCourseInterface()">Review Material</button>'
+            }
+        </div>
+    `;
 }
 
 function selectModule(index) {
     if (index <= state.currentLesson.moduleIndex) {
         state.currentLesson.moduleIndex = index;
+        state.currentLesson.quizAnswers = [];
         updateCourseInterface();
     }
 }
@@ -745,6 +1189,8 @@ function nextLesson() {
     // Check if course is completed
     if (state.currentLesson.moduleIndex < course.modules.length - 1) {
         state.currentLesson.moduleIndex++;
+        state.currentLesson.quizAnswers = [];
+        showToast('✨ Moving to next module...');
     } else {
         // Course completed - generate certificate
         generateCertificate();
@@ -758,69 +1204,168 @@ function nextLesson() {
 function prevLesson() {
     if (state.currentLesson.moduleIndex > 0) {
         state.currentLesson.moduleIndex--;
+        state.currentLesson.quizAnswers = [];
         updateCourseInterface();
     }
 }
 
-// Certificate Functions
+// Course Filtering and Search
+function filterCourses() {
+    const searchInput = document.getElementById('courseSearch');
+    const difficultyFilter = document.getElementById('difficultyFilter');
+    
+    if (searchInput) state.courseFilters.search = searchInput.value.toLowerCase();
+    if (difficultyFilter) state.courseFilters.difficulty = difficultyFilter.value;
+    
+    renderFilteredCourses();
+}
+
+function renderFilteredCourses() {
+    const coursesGrid = document.getElementById('coursesGrid');
+    if (!coursesGrid) return;
+    
+    const filtered = Object.values(state.courses).filter(course => {
+        const matchesSearch = state.courseFilters.search === '' || 
+            course.title.toLowerCase().includes(state.courseFilters.search) ||
+            course.description.toLowerCase().includes(state.courseFilters.search);
+        
+        const matchesDifficulty = state.courseFilters.difficulty === 'all' || 
+            course.difficulty.toLowerCase() === state.courseFilters.difficulty.toLowerCase();
+        
+        return matchesSearch && matchesDifficulty;
+    });
+    
+    coursesGrid.innerHTML = filtered.map(course => {
+        const isEnrolled = state.enrolledCourses.includes(course.id);
+        const progress = getCourseProgress(course.id);
+        
+        return `
+            <div class="course-card glass-card" data-course="${course.id}">
+                <div class="course-header">
+                    <div class="course-icon">${course.icon}</div>
+                    <div class="course-badges">
+                        <span class="course-badge" style="background: ${course.badgeColor}">${course.badge}</span>
+                        <span class="difficulty-badge">${course.difficulty}</span>
+                    </div>
+                </div>
+                <h3>${course.title}</h3>
+                <p>${course.description}</p>
+                
+                <div class="course-stats">
+                    <span class="course-meta">⏱️ ${course.duration}</span>
+                    <span class="course-meta">📚 ${course.lessons} Lessons</span>
+                    <span class="course-meta">⭐ ${course.rating}</span>
+                </div>
+                
+                <div class="course-meta">
+                    <span class="students-count">👥 ${course.students?.toLocaleString() || 0} students</span>
+                </div>
+                
+                ${isEnrolled ? `
+                    <div class="course-progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <button class="btn-course enrolled" onclick="startCourse('${course.id}')">
+                        Continue Learning (${progress}%)
+                    </button>
+                ` : `
+                    <button class="btn-course" onclick="startCourse('${course.id}')">
+                        ${isEnrolled ? 'Continue' : 'Start Learning'}
+                    </button>
+                `}
+            </div>
+        `;
+    }).join('');
+}
+
+function getCourseProgress(courseId) {
+    const course = state.courses[courseId];
+    if (!course) return 0;
+    
+    const completed = course.modules.filter(m => m.completed).length;
+    return Math.round((completed / course.modules.length) * 100);
+}
+
+// Certificate Functions - Enhanced
 function generateCertificate() {
     const personal = state.cvData.personal;
+    const course = state.courses[state.currentLesson.course];
     const certName = document.getElementById('certName');
     const certDate = document.getElementById('certDate');
+    const certCourseName = document.getElementById('certCourseName');
     
-    if (certName) {
-        certName.textContent = personal.name || 'Student';
-    }
+    const studentName = personal.name || 'Student';
+    const courseName = course?.title || 'AI & Tech Entrepreneur Course';
+    const completedDate = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const certId = `VEL-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
     
-    if (certDate) {
-        const date = new Date();
-        certDate.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    }
+    if (certName) certName.textContent = studentName;
+    if (certDate) certDate.textContent = completedDate;
+    if (certCourseName) certCourseName.textContent = courseName;
     
     // Add to certificates if not already there
     if (!state.certificates.includes(state.currentLesson.course)) {
-        state.certificates.push(state.currentLesson.course);
+        state.certificates.push({
+            courseId: state.currentLesson.course,
+            courseName: courseName,
+            completedDate: new Date().toISOString(),
+            certId: certId
+        });
         saveUserData();
     }
+    
+    // Update certificate ID display
+    const certIdEl = document.getElementById('certIdDisplay');
+    if (certIdEl) certIdEl.textContent = certId;
 }
 
 function downloadCertificate() {
     const personal = state.cvData.personal;
     const course = state.courses[state.currentLesson.course];
     
+    const studentName = personal.name || 'Student';
+    const courseName = course?.title || 'AI & Tech Entrepreneur Course';
+    const completedDate = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const certId = `VEL-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+    const duration = course?.duration || '32 Hours';
+    
     const content = `
-╔══════════════════════════════════════════════════════════════════╗
-║                                                                  ║
-║                    ✦ VELLON CERTIFICATE ✦                        ║
-║                    of Completion                                 ║
-║                                                                  ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║        This is to certify that                                    ║
-║                                                                  ║
-║                   ${(personal.name || 'Student').toUpperCase().padEnd(40)}║
-║                                                                  ║
-║        has successfully completed                               ║
-║                                                                  ║
-║              ${(course?.title || 'AI & Tech Entrepreneur Course').padEnd(40)}║
-║                                                                  ║
-║        ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).padEnd(50)}║
-║                                                                  ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║        Certificate ID: VEL-2026-${Math.random().toString(36).substring(2, 7).toUpperCase().padEnd(35)}║
-║                                                                  ║
-║                    ✦ VELLON ✦                                    ║
-║            AI-Powered Career Platform                            ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                        ✦ VELLON CERTIFICATE ✦                              ║
+║                        of Completion                                       ║
+║                                                                            ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║              This is to certify that                                       ║
+║                                                                            ║
+║                    ${studentName.toUpperCase().padEnd(50)}║
+║                                                                            ║
+║              has successfully completed                                    ║
+║                                                                            ║
+║                 ${courseName.padEnd(48)}║
+║                                                                            ║
+║              Duration: ${duration.padEnd(40)}║
+║              Date: ${completedDate.padEnd(45)}║
+║                                                                            ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║        Certificate ID: ${certId.padEnd(47)}║
+║                                                                            ║
+║                    ✦ VELLON ✦                                             ║
+║            AI-Powered Career Platform                                     ║
+║                    vellon.ai                                               ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+    
+VERIFICATION: Visit vellon.ai/verify and enter Certificate ID: ${certId}
     `;
     
     const blob = new Blob([content], { type: 'text/plain' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Vellon_Certificate.txt';
+    a.download = `Vellon_Certificate_${courseName.replace(/\s+/g, '_')}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -835,13 +1380,31 @@ function verifyCertificate() {
     
     if (!input || !result) return;
     
-    const certId = input.value.trim();
+    const certId = input.value.trim().toUpperCase();
     
-    if (certId.startsWith('VEL-2026-') && certId.length > 10) {
-        result.innerHTML = '✓ Certificate verified! Valid Vellon certificate.';
-        result.className = 'verify-result success';
+    // Check if it's a valid format
+    if (certId.startsWith('VEL-') && certId.length >= 10) {
+        // In production, this would verify against a backend
+        const isValid = true; // Simulated validation
+        
+        if (isValid) {
+            result.innerHTML = `
+                <div class="verify-success">
+                    <span class="verify-icon">✓</span>
+                    <div class="verify-details">
+                        <strong>Certificate Verified!</strong>
+                        <p>This is a valid Vellon certificate issued by AI-Powered Career Platform</p>
+                        <p class="cert-id-display">Certificate ID: ${certId}</p>
+                    </div>
+                </div>
+            `;
+            result.className = 'verify-result success';
+        } else {
+            result.innerHTML = `<span class="error-icon">✕</span> Certificate not found in our records.`;
+            result.className = 'verify-result error';
+        }
     } else {
-        result.innerHTML = '✕ Invalid certificate ID. Please check and try again.';
+        result.innerHTML = `<span class="error-icon">✕</span> Invalid certificate format. Please check and try again.`;
         result.className = 'verify-result error';
     }
 }
