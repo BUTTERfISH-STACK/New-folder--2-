@@ -2262,6 +2262,17 @@ section.active {
     color: var(--text-muted);
 }
 
+.cv-text-input.error {
+    border-color: #e07a5f !important;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
 /* Upload Area */
 .upload-area {
     padding: var(--spacing-3xl);
@@ -2595,6 +2606,12 @@ section.active {
 .analyze-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-gold);
+}
+
+.analyze-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .analyze-btn .btn-content {
@@ -3247,4 +3264,75 @@ section.active {
 .analysis-loading p {
     font-size: 14px;
     color: var(--text-secondary);
+}
+
+/* Quick Result Display */
+.quick-result-display {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+    animation: fadeIn 0.3s ease;
+}
+
+.quick-result-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.quick-result-score {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.quick-result-score.low {
+    color: #e07a5f;
+}
+
+.quick-result-score.medium {
+    color: #f4d03f;
+}
+
+.quick-result-score.high {
+    color: #6bcb77;
+}
+
+.quick-result-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.quick-result-tips {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+}
+
+.quick-tip {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.btn-full-analyze {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--gold-primary);
+    border-radius: var(--radius-sm);
+    color: var(--gold-primary);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-full-analyze:hover {
+    background: var(--gold-gradient);
+    color: var(--bg-primary);
 }

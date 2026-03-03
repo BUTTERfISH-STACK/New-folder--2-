@@ -1081,14 +1081,36 @@ function runCVAnalysis() {
     if (activeTab === 'paste') {
         cvText = document.getElementById('cvInputText').value;
         jobDescription = document.getElementById('jobDescriptionText').value;
+        
+        // Validation
+        if (!cvText || cvText.trim().length < 20) {
+            showToast('Please paste your CV content (at least 20 characters)');
+            // Add visual feedback
+            const textarea = document.getElementById('cvInputText');
+            textarea.classList.add('error');
+            setTimeout(() => textarea.classList.remove('error'), 2000);
+            return;
+        }
+        
     } else if (activeTab === 'upload') {
         cvText = window.uploadedCVContent || '';
         jobDescription = document.getElementById('jobDescriptionText')?.value || '';
+        
+        if (!cvText || cvText.trim().length < 20) {
+            showToast('Please upload a CV file first');
+            return;
+        }
+        
     } else if (activeTab === 'quick') {
         // Build CV text from quick inputs
         const title = document.getElementById('quickTitle')?.value || '';
         const years = document.getElementById('quickYears')?.value || '';
         const skills = document.getElementById('quickSkills')?.value || '';
+        
+        if (!title && !years && !skills) {
+            showToast('Please enter at least your job title to analyze');
+            return;
+        }
         
         cvText = `Job Title: ${title}\nYears of Experience: ${years}\nSkills: ${skills}`;
     }
@@ -1097,14 +1119,26 @@ function runCVAnalysis() {
     experienceLevel = document.getElementById('experienceSelect')?.value || 'mid';
     proMode = document.getElementById('proModeCheck')?.checked || false;
     
-    if (!cvText || cvText.trim().length < 10) {
-        showToast('Please enter your CV content or upload a file');
-        return;
+    // Show what we're analyzing
+    const analyzeBtn = document.querySelector('.analyze-btn');
+    if (analyzeBtn) {
+        analyzeBtn.innerHTML = '<span class="btn-content"><span class="btn-icon">⏳</span><span class="btn-text">Analyzing...</span></span>';
+        analyzeBtn.disabled = true;
     }
     
     // Show loading state
     const resultsContainer = document.getElementById('cvIntelligenceResults');
-    resultsContainer.innerHTML = '<div class="analysis-loading"><div class="loading-spinner"></div><h3>Analyzing Your CV</h3><p>Our AI is processing your information...</p></div>';
+    
+    // Custom loading message based on input
+    let loadingMessage = 'Analyzing your CV...';
+    if (jobDescription.trim().length > 20) {
+        loadingMessage = 'Comparing with job requirements...';
+    }
+    if (proMode) {
+        loadingMessage = 'Running PRO analysis...';
+    }
+    
+    resultsContainer.innerHTML = `<div class="analysis-loading"><div class="loading-spinner"></div><h3>${loadingMessage}</h3><p>Our AI is processing your information...</p></div>`;
     resultsContainer.classList.add('active');
     
     // Run analysis
@@ -1117,16 +1151,35 @@ function runCVAnalysis() {
             });
             
             showCVIntelligenceResults(results);
-            showToast('CV Analysis Complete!');
+            
+            // Restore button
+            if (analyzeBtn) {
+                analyzeBtn.innerHTML = '<span class="btn-content"><span class="btn-icon">🔍</span><span class="btn-text">Analyze My CV</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>';
+                analyzeBtn.disabled = false;
+            }
+            
+            // Show success toast with score
+            if (results && results.atsScore !== undefined) {
+                showToast(`Analysis Complete! ATS Score: ${results.atsScore}%`);
+            } else {
+                showToast('CV Analysis Complete!');
+            }
             
             // Scroll to results
             resultsContainer.scrollIntoView({ behavior: 'smooth' });
+            
         } catch (error) {
             console.error('Analysis error:', error);
             resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;"><p style="color:#e07a5f">Error analyzing CV. Please try again.</p></div>';
             showToast('Analysis failed. Please try again.');
+            
+            // Restore button
+            if (analyzeBtn) {
+                analyzeBtn.innerHTML = '<span class="btn-content"><span class="btn-icon">🔍</span><span class="btn-text">Analyze My CV</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>';
+                analyzeBtn.disabled = false;
+            }
         }
-    }, 800);
+    }, 1000);
 }
 
 // AI Enhancement for CV Builder Step 5
@@ -1438,13 +1491,24 @@ function handleFileUpload(file) {
         if (fileName) fileName.textContent = file.name;
     }
     
+    // Show processing indicator
+    showToast('Processing file...');
+    
     // Read file content
     const reader = new FileReader();
     reader.onload = (e) => {
         const content = e.target.result;
         // Store the content for analysis
         window.uploadedCVContent = content;
-        showToast(`File "${file.name}" uploaded successfully!`);
+        
+        // Show success with details
+        const wordCount = content.split(/\s+/).length;
+        showToast(`✓ "${file.name}" loaded! ${wordCount} words detected.`);
+        
+        // Add a note about analysis
+        setTimeout(() => {
+            showToast('Click "Analyze My CV" to get detailed insights!');
+        }, 1500);
     };
     
     reader.onerror = () => {
@@ -1454,9 +1518,12 @@ function handleFileUpload(file) {
     if (file.type === 'text/plain') {
         reader.readAsText(file);
     } else {
-        // For PDF/DOCX, we'd need additional libraries
-        // For now, just show success
-        showToast('File uploaded! Click Analyze to process.');
+        // For PDF/DOCX - simulate content extraction
+        // In production, you'd use pdf.js or mammoth.js
+        setTimeout(() => {
+            window.uploadedCVContent = `[File uploaded: ${file.name}]\n\nNote: For PDF/DOCX files, please ensure the text is properly formatted. The analysis will work best with plain text content.\n\nYou can also copy-paste your CV content in the Paste Text tab for more accurate analysis.`;
+            showToast(`✓ File "${file.name}" uploaded! For best results, also paste text.`);
+        }, 500);
     }
 }
 
@@ -1473,28 +1540,52 @@ function removeUploadedFile() {
     window.uploadedCVContent = null;
 }
 
-// Quick Score Calculator
+// Quick Score Calculator - Shows quick ATS score without full analysis
 function calculateQuickScore() {
     const title = document.getElementById('quickTitle')?.value || '';
     const years = parseInt(document.getElementById('quickYears')?.value || '0');
     const skills = document.getElementById('quickSkills')?.value || '';
     
+    if (!title && years === 0 && !skills) {
+        showToast('Please enter at least one field to calculate score');
+        return;
+    }
+    
     let score = 0;
+    let tips = [];
     
     // Title presence
-    if (title.length > 0) score += 20;
-    if (title.length > 10) score += 10;
+    if (title.length > 0) {
+        score += 20;
+        if (title.toLowerCase().includes('senior') || title.toLowerCase().includes('lead')) {
+            score += 10;
+            tips.push('Senior/Lead titles boost credibility');
+        }
+    } else {
+        tips.push('Add your job title to improve score');
+    }
     
     // Years of experience
     if (years >= 1) score += 15;
     if (years >= 3) score += 15;
     if (years >= 5) score += 10;
+    if (years >= 10) score += 10;
+    
+    if (years === 0) {
+        tips.push('Add years of experience');
+    }
     
     // Skills
     const skillCount = skills.split(',').filter(s => s.trim()).length;
     if (skillCount >= 3) score += 15;
     if (skillCount >= 5) score += 15;
     if (skillCount >= 10) score += 10;
+    
+    if (skillCount < 3) {
+        tips.push('Add at least 3 skills for better score');
+    } else if (skillCount >= 5) {
+        tips.push('Great skill variety!');
+    }
     
     // Cap at 100
     score = Math.min(score, 100);
@@ -1514,5 +1605,54 @@ function calculateQuickScore() {
         }
     }
     
-    showToast(`Quick ATS Score: ${score}%`);
+    // Show quick tips based on score
+    let message = `Quick ATS Score: ${score}%`;
+    if (tips.length > 0 && score < 70) {
+        message += ` - ${tips[0]}`;
+    }
+    showToast(message);
+    
+    // Also show a quick result popup
+    showQuickResult(score, tips);
+}
+
+// Show quick result in a modal-like display
+function showQuickResult(score, tips) {
+    const quickSection = document.querySelector('.quick-analyze');
+    if (!quickSection) return;
+    
+    // Remove any existing quick result
+    const existingResult = document.getElementById('quickResultDisplay');
+    if (existingResult) existingResult.remove();
+    
+    // Create result display
+    const resultDiv = document.createElement('div');
+    resultDiv.id = 'quickResultDisplay';
+    resultDiv.className = 'quick-result-display';
+    
+    let scoreClass = score < 40 ? 'low' : score < 70 ? 'medium' : 'high';
+    let scoreMessage = score < 40 ? 'Needs Improvement' : score < 70 ? 'Good' : 'Excellent';
+    
+    resultDiv.innerHTML = `
+        <div class="quick-result-header">
+            <span class="quick-result-score ${scoreClass}">${score}%</span>
+            <span class="quick-result-label">${scoreMessage}</span>
+        </div>
+        <div class="quick-result-tips">
+            ${tips.map(tip => `<span class="quick-tip">💡 ${tip}</span>`).join('')}
+        </div>
+        <button class="btn-full-analyze" onclick="switchToFullAnalysis()">
+            Get Full Analysis →
+        </button>
+    `;
+    
+    quickSection.appendChild(resultDiv);
+}
+
+// Switch to full analysis tab
+function switchToFullAnalysis() {
+    const pasteTab = document.querySelector('.input-tab[data-tab="paste"]');
+    if (pasteTab) {
+        pasteTab.click();
+    }
 }
