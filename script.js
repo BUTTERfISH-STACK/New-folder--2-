@@ -1,5 +1,24 @@
 // Vellon - Premium AI Career Platform JavaScript
 
+// AI Configuration - Set your HuggingFace API key here
+const AI_CONFIG = {
+    // To use HuggingFace AI, set your token here:
+    // hf_token: "your_huggingface_token_here"
+    // 
+    // Get your free token at: https://huggingface.co/settings/tokens
+    // The Qwen3.5-35B model is available for free through HuggingFace inference
+    hf_token: null, // Set this to use AI-powered analysis
+    useLocalFallback: true // Use local analysis if no token
+};
+
+// Initialize AI Service when token is set
+if (AI_CONFIG.hf_token) {
+    AIService.init(AI_CONFIG.hf_token);
+    console.log("🤖 HuggingFace AI Service initialized");
+} else {
+    console.log("📝 Using local AI analysis. Set AI_CONFIG.hf_token for AI-powered analysis.");
+}
+
 // State Management
 const state = {
     currentSection: 'home',
@@ -1254,7 +1273,7 @@ window.addEventListener('load', function() {
 });
 
 // CV Intelligence Analysis Function
-function runCVAnalysis() {
+async function runCVAnalysis() {
     // Check which tab is active
     const activeTab = document.querySelector('.input-tab.active')?.dataset.tab || 'paste';
     
@@ -1324,52 +1343,70 @@ function runCVAnalysis() {
         loadingMessage = 'Running PRO analysis...';
     }
     
-    resultsContainer.innerHTML = `<div class="analysis-loading"><div class="loading-spinner"></div><h3>${loadingMessage}</h3><p>Our AI is processing your information...</p></div>`;
+    // Check if AI service is available
+    const useAI = AI_CONFIG.hf_token && AIService;
+    if (useAI) {
+        loadingMessage = '🤖 AI is analyzing your CV...';
+    }
+    
+    resultsContainer.innerHTML = `<div class="analysis-loading"><div class="loading-spinner"></div><h3>${loadingMessage}</h3><p>${useAI ? 'Using Qwen3.5 AI Model' : 'Using local analysis engine'}</p></div>`;
     resultsContainer.classList.add('active');
     
-    // Run analysis
-    setTimeout(() => {
-        try {
-            const results = analyzeCV(cvText, jobDescription, {
-                industry,
-                experienceLevel,
-                proMode
-            });
-            
-            showCVIntelligenceResults(results);
-            
-            // Restore button
-            if (analyzeBtn) {
-                analyzeBtn.innerHTML = '<span class="btn-content"><span class="btn-icon">🔍</span><span class="btn-text">Analyze My CV</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>';
-                analyzeBtn.disabled = false;
+    try {
+        let results;
+        
+        if (useAI) {
+            // Use HuggingFace AI Service
+            try {
+                results = await AIService.analyzeCVWithAI(cvText, jobDescription, {
+                    industry,
+                    experienceLevel,
+                    proMode
+                });
+                console.log("🤖 AI Analysis completed");
+            } catch (aiError) {
+                console.error("AI failed, falling back to local:", aiError);
+                results = analyzeCV(cvText, jobDescription, { industry, experienceLevel, proMode });
             }
-            
-            // Show success toast with score
-            if (results && results.atsScore !== undefined) {
-                showToast(`Analysis Complete! ATS Score: ${results.atsScore}%`);
-            } else {
-                showToast('CV Analysis Complete!');
-            }
-            
-            // Scroll to results
-            resultsContainer.scrollIntoView({ behavior: 'smooth' });
-            
-        } catch (error) {
-            console.error('Analysis error:', error);
-            resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;"><p style="color:#e07a5f">Error analyzing CV. Please try again.</p></div>';
-            showToast('Analysis failed. Please try again.');
-            
-            // Restore button
-            if (analyzeBtn) {
-                analyzeBtn.innerHTML = '<span class="btn-content"><span class="btn-icon">🔍</span><span class="btn-text">Analyze My CV</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>';
-                analyzeBtn.disabled = false;
-            }
+        } else {
+            // Use local analysis engine
+            results = analyzeCV(cvText, jobDescription, { industry, experienceLevel, proMode });
         }
-    }, 1000);
+        
+        showCVIntelligenceResults(results);
+        
+        // Restore button
+        if (analyzeBtn) {
+            analyzeBtn.innerHTML = '<span class="btn-content"><span class="btn-icon">🔍</span><span class="btn-text">Analyze My CV</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>';
+            analyzeBtn.disabled = false;
+        }
+        
+        // Show success toast with score
+        if (results && results.atsScore !== undefined) {
+            const aiBadge = useAI ? ' 🤖' : '';
+            showToast(`Analysis Complete!${aiBadge} ATS Score: ${results.atsScore}%`);
+        } else {
+            showToast('CV Analysis Complete!');
+        }
+        
+        // Scroll to results
+        resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        
+    } catch (error) {
+        console.error('Analysis error:', error);
+        resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;"><p style="color:#e07a5f">Error analyzing CV. Please try again.</p></div>';
+        showToast('Analysis failed. Please try again.');
+        
+        // Restore button
+        if (analyzeBtn) {
+            analyzeBtn.innerHTML = '<span class="btn-content"><span class="btn-icon">🔍</span><span class="btn-text">Analyze My CV</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>';
+            analyzeBtn.disabled = false;
+        }
+    }
 }
 
 // AI Enhancement for CV Builder Step 5
-function runAIEnhancement() {
+async function runAIEnhancement() {
     // Gather CV data from form
     const cvText = buildCVTextFromForm();
     
@@ -1377,58 +1414,72 @@ function runAIEnhancement() {
     const aiSuggestionsContainer = document.querySelector('.ai-suggestions');
     const keywordSuggestionsContainer = document.getElementById('keywordSuggestions');
     
+    // Check if AI is available
+    const useAI = AI_CONFIG.hf_token && AIService;
+    
     if (aiSuggestionsContainer) {
+        const aiIndicator = useAI ? '🤖 ' : '';
         aiSuggestionsContainer.innerHTML = `
             <div class="ai-analyzing">
                 <div class="analyzing-spinner"></div>
-                <span>Analyzing your CV with AI...</span>
+                <span>${aiIndicator}Analyzing your CV with AI...</span>
             </div>
         `;
     }
     
-    // Run analysis with a slight delay for UX
-    setTimeout(() => {
-        try {
-            const results = analyzeCV(cvText, '', {
-                industry: 'tech',
-                experienceLevel: 'mid',
-                proMode: false
-            });
-            
-            // Update AI Suggestions
-            if (aiSuggestionsContainer) {
-                updateAISuggestions(results);
+    try {
+        let results;
+        
+        if (useAI) {
+            try {
+                results = await AIService.analyzeCVWithAI(cvText, '', {
+                    industry: 'tech',
+                    experienceLevel: 'mid',
+                    proMode: false
+                });
+                console.log("🤖 CV Builder AI Enhancement completed");
+            } catch (aiError) {
+                console.error("AI failed, using local:", aiError);
+                results = analyzeCV(cvText, '', { industry: 'tech', experienceLevel: 'mid', proMode: false });
             }
-            
-            // Update Keywords
-            if (keywordSuggestionsContainer) {
-                updateKeywordSuggestions(results);
-            }
-            
-            // Show success toast
-            showToast('CV Analysis Complete!');
-            
-        } catch (error) {
-            console.error('AI Enhancement error:', error);
-            // Show error state with fallback suggestions
-            if (aiSuggestionsContainer) {
-                aiSuggestionsContainer.innerHTML = `
-                    <div class="ai-suggestion-item">
-                        <div class="ai-badge">AI Suggestion</div>
-                        <p>Add quantifiable achievements to stand out. Use numbers like "40% increase" or "$100K saved".</p>
-                    </div>
-                    <div class="ai-suggestion-item">
-                        <div class="ai-badge">AI Suggestion</div>
-                        <p>Include relevant keywords from job descriptions to pass ATS systems.</p>
-                    </div>
-                    <div class="ai-suggestion-item">
-                        <div class="ai-badge">AI Suggestion</div>
-                        <p>Keep your CV concise - 2 pages maximum for experienced professionals.</p>
-                    </div>
-                `;
-            }
+        } else {
+            results = analyzeCV(cvText, '', { industry: 'tech', experienceLevel: 'mid', proMode: false });
         }
-    }, 500);
+        
+        // Update AI Suggestions
+        if (aiSuggestionsContainer) {
+            updateAISuggestions(results);
+        }
+        
+        // Update Keywords
+        if (keywordSuggestionsContainer) {
+            updateKeywordSuggestions(results);
+        }
+        
+        // Show success toast
+        const aiBadge = useAI ? ' 🤖' : '';
+        showToast(`CV Analysis Complete${aiBadge}!`);
+        
+    } catch (error) {
+        console.error('AI Enhancement error:', error);
+        // Show error state with fallback suggestions
+        if (aiSuggestionsContainer) {
+            aiSuggestionsContainer.innerHTML = `
+                <div class="ai-suggestion-item">
+                    <div class="ai-badge">AI Suggestion</div>
+                    <p>Add quantifiable achievements to stand out. Use numbers like "40% increase" or "$100K saved".</p>
+                </div>
+                <div class="ai-suggestion-item">
+                    <div class="ai-badge">AI Suggestion</div>
+                    <p>Include relevant keywords from job descriptions to pass ATS systems.</p>
+                </div>
+                <div class="ai-suggestion-item">
+                    <div class="ai-badge">AI Suggestion</div>
+                    <p>Keep your CV concise - 2 pages maximum for experienced professionals.</p>
+                </div>
+            `;
+        }
+    }
 }
 
 // Build CV text from form data
@@ -1842,3 +1893,100 @@ function switchToFullAnalysis() {
         pasteTab.click();
     }
 }
+
+// AI Settings Functions
+function saveAISettings() {
+    const tokenInput = document.getElementById('hfTokenInput');
+    const token = tokenInput?.value.trim();
+    
+    if (!token) {
+        showToast('Please enter a HuggingFace token');
+        return;
+    }
+    
+    if (!token.startsWith('hf_')) {
+        showToast('Invalid token format. Token should start with hf_');
+        return;
+    }
+    
+    // Save to config
+    AI_CONFIG.hf_token = token;
+    
+    // Initialize AI Service
+    AIService.init(token);
+    
+    // Save to localStorage
+    localStorage.setItem('vellon_ai_token', token);
+    
+    // Update status
+    updateAIStatus(true);
+    
+    showToast('🤖 AI Settings Saved! AI is now active.');
+    
+    // Close modal
+    document.getElementById('aiSettingsModal').classList.remove('active');
+}
+
+function updateAIStatus(isActive) {
+    const statusText = document.getElementById('aiStatusText');
+    if (statusText) {
+        if (isActive) {
+            statusText.innerHTML = '🟢 AI Active - Qwen3.5 Model';
+            statusText.style.color = '#6bcb77';
+        } else {
+            statusText.innerHTML = '🔴 AI Not Configured';
+            statusText.style.color = '#888';
+        }
+    }
+}
+
+async function testAIConnection() {
+    const tokenInput = document.getElementById('hfTokenInput');
+    const token = tokenInput?.value.trim();
+    
+    if (!token) {
+        showToast('Please enter a token first');
+        return;
+    }
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Testing...';
+    
+    try {
+        // Initialize with token
+        AIService.init(token);
+        
+        // Quick test
+        const response = await AIService.complete("Say 'Hello' if you can hear me.", { max_tokens: 50 });
+        
+        if (response && response.toLowerCase().includes('hello')) {
+            showToast('✅ AI Connection Successful!');
+            updateAIStatus(true);
+        } else {
+            showToast('⚠️ AI responded but may not be working correctly');
+        }
+    } catch (error) {
+        console.error('AI Test error:', error);
+        showToast('❌ AI Connection Failed: ' + error.message);
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Test Connection';
+}
+
+// Load saved AI token on startup
+function loadAISettings() {
+    const savedToken = localStorage.getItem('vellon_ai_token');
+    if (savedToken) {
+        AI_CONFIG.hf_token = savedToken;
+        AIService.init(savedToken);
+        updateAIStatus(true);
+        console.log('🤖 AI Service loaded from saved settings');
+    }
+}
+
+// Initialize AI settings on load
+window.addEventListener('load', function() {
+    loadAISettings();
+});

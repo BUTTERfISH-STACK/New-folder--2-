@@ -1,0 +1,110 @@
+/* AI Settings Modal Styles */
+#aiSettingsModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+#aiSettingsModal.active {
+    display: flex;
+}
+
+#aiSettingsModal .modal-content {
+    background: var(--bg-secondary);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    max-width: 450px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#aiSettingsModal .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#aiSettingsModal .modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--gold-primary);
+}
+
+#aiSettingsModal .modal-body {
+    padding: 24px;
+}
+
+#aiSettingsModal .close-modal {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+#aiSettingsModal .close-modal:hover {
+    color: var(--gold);
+}
+
+#aiSettingsModal .form-group {
+    margin-bottom: 16px;
+}
+
+#aiSettingsModal .form-group label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+#aiSettingsModal .form-group small {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #888;
+}
+
+#aiSettingsModal .form-group a {
+    color: var(--gold-primary);
+    text-decoration: none;
+}
+
+#aiSettingsModal .form-group a:hover {
+    text-decoration: underline;
+}
+
+#aiSettingsModal .btn-outline {
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+}
+
+#aiSettingsModal .btn-outline:hover {
+    background: var(--gold);
+    color: var(--bg-primary);
+}
+
+#aiSettingsModal .btn-outline:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
