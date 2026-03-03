@@ -150,6 +150,11 @@ function updateCVSteps() {
     // Update preview
     updateCVPreview();
     saveCVData();
+    
+    // Run AI Enhancement analysis when entering step 5
+    if (state.currentCVStep === 5) {
+        runAIEnhancement();
+    }
 }
 
 function saveCVData() {
@@ -166,6 +171,31 @@ function saveCVData() {
     // Skills
     state.cvData.skills = document.getElementById('cvSkills')?.value || '';
     state.cvData.softSkills = document.getElementById('cvSoftSkills')?.value || '';
+    
+    // Experience - collect from DOM
+    const expItems = document.querySelectorAll('.experience-item');
+    state.cvData.experience = [];
+    expItems.forEach(item => {
+        state.cvData.experience.push({
+            title: item.querySelector('.exp-title')?.value || '',
+            company: item.querySelector('.exp-company')?.value || '',
+            start: item.querySelector('.exp-start')?.value || '',
+            end: item.querySelector('.exp-end')?.value || '',
+            description: item.querySelector('.exp-description')?.value || ''
+        });
+    });
+    
+    // Education - collect from DOM
+    const eduItems = document.querySelectorAll('.education-item');
+    state.cvData.education = [];
+    eduItems.forEach(item => {
+        state.cvData.education.push({
+            degree: item.querySelector('.edu-degree')?.value || '',
+            school: item.querySelector('.edu-school')?.value || '',
+            year: item.querySelector('.edu-year')?.value || '',
+            achievements: item.querySelector('.edu-achievements')?.value || ''
+        });
+    });
     
     // Update ATS score
     updateATSScore();
@@ -1066,4 +1096,206 @@ function runCVAnalysis() {
             showToast('Analysis failed. Please try again.');
         }
     }, 500);
+}
+
+// AI Enhancement for CV Builder Step 5
+function runAIEnhancement() {
+    // Gather CV data from form
+    const cvText = buildCVTextFromForm();
+    
+    if (!cvText || cvText.trim().length < 30) {
+        // Not enough data, show placeholder
+        return;
+    }
+    
+    // Show analyzing indicator
+    const aiSuggestionsContainer = document.querySelector('.ai-suggestions');
+    const keywordSuggestionsContainer = document.getElementById('keywordSuggestions');
+    
+    if (aiSuggestionsContainer) {
+        aiSuggestionsContainer.innerHTML = '<div style="text-align:center;padding:20px;"><span>Analyzing your CV...</span></div>';
+    }
+    
+    // Run analysis with a slight delay for UX
+    setTimeout(() => {
+        try {
+            const results = analyzeCV(cvText, '', {
+                industry: 'tech',
+                experienceLevel: 'mid',
+                proMode: false
+            });
+            
+            // Update AI Suggestions
+            if (aiSuggestionsContainer) {
+                updateAISuggestions(results);
+            }
+            
+            // Update Keywords
+            if (keywordSuggestionsContainer) {
+                updateKeywordSuggestions(results);
+            }
+            
+        } catch (error) {
+            console.error('AI Enhancement error:', error);
+            // Keep default suggestions on error
+        }
+    }, 300);
+}
+
+// Build CV text from form data
+function buildCVTextFromForm() {
+    const personal = state.cvData.personal;
+    let cvText = '';
+    
+    // Add personal details
+    if (personal.name) cvText += personal.name + '\n';
+    if (personal.title) cvText += personal.title + '\n';
+    if (personal.email) cvText += personal.email + '\n';
+    if (personal.phone) cvText += personal.phone + '\n';
+    if (personal.location) cvText += personal.location + '\n';
+    
+    cvText += '\nEXPERIENCE\n';
+    
+    // Add experience
+    const expItems = document.querySelectorAll('.experience-item');
+    expItems.forEach(item => {
+        const title = item.querySelector('.exp-title')?.value;
+        const company = item.querySelector('.exp-company')?.value;
+        const start = item.querySelector('.exp-start')?.value;
+        const end = item.querySelector('.exp-end')?.value;
+        const desc = item.querySelector('.exp-description')?.value;
+        
+        if (title) {
+            cvText += title + '\n';
+            if (company) cvText += company + '\n';
+            if (start || end) cvText += (start || '') + ' - ' + (end || 'Present') + '\n';
+            if (desc) cvText += desc + '\n';
+            cvText += '\n';
+        }
+    });
+    
+    // Add skills
+    const skills = state.cvData.skills;
+    const softSkills = state.cvData.softSkills;
+    
+    if (skills || softSkills) {
+        cvText += 'SKILLS\n';
+        if (skills) cvText += skills + '\n';
+        if (softSkills) cvText += softSkills + '\n';
+    }
+    
+    cvText += '\nEDUCATION\n';
+    
+    // Add education
+    const eduItems = document.querySelectorAll('.education-item');
+    eduItems.forEach(item => {
+        const degree = item.querySelector('.edu-degree')?.value;
+        const school = item.querySelector('.edu-school')?.value;
+        const year = item.querySelector('.edu-year')?.value;
+        
+        if (degree) {
+            cvText += degree + '\n';
+            if (school) cvText += school + '\n';
+            if (year) cvText += year + '\n';
+            cvText += '\n';
+        }
+    });
+    
+    return cvText;
+}
+
+// Update AI suggestions with analysis results
+function updateAISuggestions(results) {
+    const container = document.querySelector('.ai-suggestions');
+    if (!container) return;
+    
+    const suggestions = [];
+    
+    // Add suggestions based on weaknesses found
+    const weaknesses = results.structuralWeaknesses;
+    
+    if (weaknesses.weakBullets && weaknesses.weakBullets.length > 0) {
+        suggestions.push({
+            title: 'Weak Phrases Detected',
+            text: `Found ${weaknesses.weakBullets.length} weak phrases like "responsible for". Replace with stronger action verbs for more impact.`
+        });
+    }
+    
+    if (weaknesses.missingMetrics && weaknesses.missingMetrics.length > 0) {
+        suggestions.push({
+            title: 'Add Quantifiable Metrics',
+            text: `${weaknesses.missingMetrics.length} achievements lack metrics. Add numbers like "40% increase" or "$100K saved" to stand out.`
+        });
+    }
+    
+    // ATS Score suggestion
+    if (results.atsScore < 70) {
+        suggestions.push({
+            title: 'ATS Score Needs Improvement',
+            text: `Your CV scores ${results.atsScore}% on ATS. Add more relevant keywords to improve visibility.`
+        });
+    } else {
+        suggestions.push({
+            title: 'Great ATS Score',
+            text: `Your CV scores ${results.atsScore}% on ATS - well optimized for applicant tracking systems!`
+        });
+    }
+    
+    // Personal brand suggestions
+    const brand = results.personalBrand;
+    if (brand.analysis && brand.analysis.length > 0) {
+        suggestions.push({
+            title: 'Personal Brand Tips',
+            text: brand.analysis[0]
+        });
+    }
+    
+    // Power bullet upgrade suggestion
+    if (results.powerBulletUpgrades && results.powerBulletUpgrades.length > 0) {
+        suggestions.push({
+            title: 'Bullet Point Upgrades Available',
+            text: `Found ${results.powerBulletUpgrades.length} bullet points that can be enhanced with stronger action verbs and metrics.`
+        });
+    }
+    
+    // Fallback suggestions if not enough analysis
+    if (suggestions.length < 3) {
+        suggestions.push({
+            title: 'Keyword Optimization',
+            text: 'Include relevant industry keywords from job descriptions to pass ATS screenings.'
+        });
+        suggestions.push({
+            title: 'Keep It Concise',
+            text: 'Aim for 2 pages maximum. Use bullet points for easy scanning by recruiters.'
+        });
+    }
+    
+    // Render suggestions
+    container.innerHTML = suggestions.slice(0, 5).map(s => `
+        <div class="ai-suggestion-item">
+            <div class="ai-badge">${s.title}</div>
+            <p>${s.text}</p>
+        </div>
+    `).join('');
+}
+
+// Update keyword suggestions
+function updateKeywordSuggestions(results) {
+    const container = document.getElementById('keywordSuggestions');
+    if (!container) return;
+    
+    // Combine missing and matched keywords
+    const keywords = [
+        ...(results.missingKeywords || []).slice(0, 5),
+        ...(results.matchedKeywords || []).slice(0, 5)
+    ];
+    
+    // Remove duplicates and get unique
+    const uniqueKeywords = [...new Set(keywords)];
+    
+    if (uniqueKeywords.length > 0) {
+        container.innerHTML = uniqueKeywords.slice(0, 8).map(k => 
+            `<span class="keyword">${k}</span>`
+        ).join('');
+    }
 }
