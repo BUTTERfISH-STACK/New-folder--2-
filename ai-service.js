@@ -1,5 +1,5 @@
 /**
- * VELLON AI SERVICE
+ * vellon x AI Service
  * Integrates HuggingFace Qwen3.5-35B for all AI-powered features
  */
 

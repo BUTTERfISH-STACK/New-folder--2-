@@ -1,7 +1,7 @@
-# Vellon X AI Service Setup Guide
+# vellon x AI Service Setup Guide
 
 ## Overview
-Your Vellon X CV Career Platform now supports the HuggingFace Qwen3.5-35B AI model for enhanced CV analysis, rewriting, and optimization.
+Your vellon x CV Career Platform now supports the HuggingFace Qwen3.5-35B AI model for enhanced CV analysis, rewriting, and optimization.
 
 ## Getting Your Free HuggingFace Token
 
@@ -10,12 +10,12 @@ Your Vellon X CV Career Platform now supports the HuggingFace Qwen3.5-35B AI mod
 3. **Get Token**: 
    - Click your profile icon → Settings → Access Tokens
    - Click "Create new token"
-   - Name it "Vellon X AI" 
+   - Name it "vellon x AI" 
    - Copy the token (starts with `hf_`)
 
-## Activating AI in Vellon X
+## Activating AI in vellon x
 
-1. Open Vellon X in your browser
+1. Open vellon x in your browser
 2. Click the 🤖 **AI** button in the navigation bar
 3. Paste your HuggingFace token
 4. Click "Save & Activate AI"
@@ -57,7 +57,7 @@ The platform works without AI! It uses a local analysis engine that provides:
 
 ## Privacy
 
-Your token is stored locally in your browser. Vellon X never stores or accesses your token on any server.
+Your token is stored locally in your browser. vellon x never stores or accesses your token on any server.
 
 ## Support
 

@@ -1,5 +1,5 @@
 /**
- * VELLON CV INTELLIGENCE ENGINE
+ * vellon x CV Intelligence Engine
  * Enterprise-grade CV analysis, rewriting, and optimization system
  * Implements ATS optimization, achievement quantification, and interview preparation
  */
@@ -1208,7 +1208,7 @@ function analyzeCV(cvText, jobDescription = '', options = {}) {
 }
 
 // ============================================================================
-// UI FUNCTIONS FOR VELLON INTEGRATION
+// UI FUNCTIONS FOR vellon x INTEGRATION
 // ============================================================================
 
 function showCVIntelligenceResults(results) {
