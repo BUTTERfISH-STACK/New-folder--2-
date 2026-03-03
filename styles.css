@@ -3686,3 +3686,102 @@ section.active {
         flex: 1;
     }
 }
+
+/* CV Intelligence Tips Banner */
+.intelligence-tips-banner {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(184, 134, 11, 0.05));
+    border-radius: 12px;
+    margin-bottom: var(--spacing-xl);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.tip-banner-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.tip-banner-icon {
+    font-size: 20px;
+}
+
+.tip-banner-item strong {
+    color: var(--gold-primary);
+}
+
+/* CV Tips Section */
+.cv-tips-section {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cv-tips-section h4 {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
+
+.tip-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: var(--spacing-lg);
+    transition: all 0.3s ease;
+}
+
+.tip-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(212, 175, 55, 0.3);
+    transform: translateY(-2px);
+}
+
+.tip-card-icon {
+    font-size: 28px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.tip-card h5 {
+    color: var(--gold-primary);
+    font-size: 14px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.tip-card p {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Responsive for Tips */
+@media (max-width: 1024px) {
+    .tips-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .intelligence-tips-banner {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+}
