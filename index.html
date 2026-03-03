@@ -31,7 +31,6 @@
                 <a href="#features" class="nav-link" onclick="showSection('features')">Features</a>
                 <a href="#cv-builder" class="nav-link" onclick="showSection('cv-builder')">CV Redo</a>
                 <a href="#cv-intelligence" class="nav-link" onclick="showSection('cv-intelligence')">AI Analysis</a>
-                <a href="#courses" class="nav-link" onclick="showSection('courses')">Courses</a>
                 <a href="#certificates" class="nav-link" onclick="showSection('certificates')">Certificates</a>
             </div>
             
@@ -75,16 +74,13 @@
                         With <span class="gold-gradient">AI</span>
                     </h1>
                     <p class="hero-subtitle">
-                        Transform your career with our AI CV optimization tool and cutting-edge 
-                        tech entrepreneurship course. Get certified and stand out.
+                        Transform your career with our AI CV optimization tool and intelligent 
+                        career coaching. Get certified and stand out.
                     </p>
                     <div class="hero-buttons">
                         <button class="btn-gold" onclick="showSection('cv-builder')">
                             <span>Redo My CV</span>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </button>
-                        <button class="btn-glass" onclick="showSection('courses')">
-                            <span>Start Learning AI</span>
                         </button>
                     </div>
                     <div class="hero-stats">
@@ -143,13 +139,6 @@
                     <div class="feature-icon">📋</div>
                     <h3>ATS-Ready Templates</h3>
                     <p>Professional templates designed to pass Applicant Tracking Systems. Stand out to recruiters and hiring managers.</p>
-                    <div class="feature-glow"></div>
-                </div>
-                
-                <div class="feature-card glass-card" onclick="showSection('courses')">
-                    <div class="feature-icon">🚀</div>
-                    <h3>AI & Tech Entrepreneur Course</h3>
-                    <p>Master AI tools, build digital products, and learn future-proof tech skills. Transform your career in 2026.</p>
                     <div class="feature-glow"></div>
                 </div>
                 
@@ -631,178 +620,7 @@ Why add this?
             </div>
         </section>
 
-        <!-- Courses Section -->
-        <section id="courses" class="courses-section">
-            <div class="section-header">
-                <h2 class="section-title">AI & Tech <span class="gold-gradient">Entrepreneur</span></h2>
-                <p class="section-subtitle">Master the skills of the future</p>
-            </div>
-            
-            <!-- Course Filters -->
-            <div class="course-filters glass-card">
-                <div class="filter-search">
-                    <input type="text" id="courseSearch" placeholder="Search courses..." 
-                           oninput="filterCourses()" class="filter-input">
-                    <span class="search-icon">🔍</span>
-                </div>
-                <div class="filter-options">
-                    <select id="difficultyFilter" onchange="filterCourses()" class="filter-select">
-                        <option value="all">All Levels</option>
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="courses-grid" id="coursesGrid">
-                <!-- Course cards will be rendered dynamically -->
-                <div class="course-card glass-card" data-course="ai-foundations">
-                    <div class="course-header">
-                        <div class="course-icon">🧠</div>
-                        <div class="course-badges">
-                            <div class="course-badge">Module 1</div>
-                            <span class="difficulty-badge">Beginner</span>
-                        </div>
-                    </div>
-                    <h3>AI Foundations</h3>
-                    <p>Understand the fundamentals of AI, machine learning, and how to leverage AI tools for business.</p>
-                    <div class="course-stats">
-                        <span class="course-meta">⏱️ 8 Hours</span>
-                        <span class="course-meta">📚 12 Lessons</span>
-                        <span class="course-meta">⭐ 4.8</span>
-                    </div>
-                    <div class="course-meta">
-                        <span class="students-count">👥 2,847 students</span>
-                    </div>
-                    <button class="btn-course" onclick="startCourse('ai-foundations')">Start Learning</button>
-                </div>
-                
-                <div class="course-card glass-card" data-course="ai-productivity">
-                    <div class="course-header">
-                        <div class="course-icon">⚡</div>
-                        <div class="course-badges">
-                            <div class="course-badge">Module 2</div>
-                            <span class="difficulty-badge">Intermediate</span>
-                        </div>
-                    </div>
-                    <h3>AI Productivity Tools</h3>
-                    <p>Master AI-powered tools to 10x your productivity. Learn ChatGPT, Claude, and more.</p>
-                    <div class="course-stats">
-                        <span class="course-meta">⏱️ 6 Hours</span>
-                        <span class="course-meta">📚 10 Lessons</span>
-                        <span class="course-meta">⭐ 4.9</span>
-                    </div>
-                    <div class="course-meta">
-                        <span class="students-count">👥 3,421 students</span>
-                    </div>
-                    <button class="btn-course" onclick="startCourse('ai-productivity')">Start Learning</button>
-                </div>
-                
-                <div class="course-card glass-card" data-course="digital-products">
-                    <div class="course-header">
-                        <div class="course-icon">💼</div>
-                        <div class="course-badges">
-                            <div class="course-badge">Module 3</div>
-                            <span class="difficulty-badge">Advanced</span>
-                        </div>
-                    </div>
-                    <h3>Building Digital Products</h3>
-                    <p>Learn to build and launch digital products. From idea to MVP in weeks, not months.</p>
-                    <div class="course-stats">
-                        <span class="course-meta">⏱️ 10 Hours</span>
-                        <span class="course-meta">📚 15 Lessons</span>
-                        <span class="course-meta">⭐ 4.7</span>
-                    </div>
-                    <div class="course-meta">
-                        <span class="students-count">👥 1,893 students</span>
-                    </div>
-                    <button class="btn-course" onclick="startCourse('digital-products')">Start Learning</button>
-                </div>
-                
-                <div class="course-card glass-card" data-course="future-skills">
-                    <div class="course-header">
-                        <div class="course-icon">🔮</div>
-                        <div class="course-badges">
-                            <div class="course-badge">Module 4</div>
-                            <span class="difficulty-badge">Intermediate</span>
-                        </div>
-                    </div>
-                    <h3>Future-Proof Tech Skills</h3>
-                    <p>Stay ahead with skills that will matter in 2026 and beyond. No-code, automation, and more.</p>
-                    <div class="course-stats">
-                        <span class="course-meta">⏱️ 8 Hours</span>
-                        <span class="course-meta">📚 12 Lessons</span>
-                        <span class="course-meta">⭐ 4.8</span>
-                    </div>
-                    <div class="course-meta">
-                        <span class="students-count">👥 2,156 students</span>
-                    </div>
-                    <button class="btn-course" onclick="startCourse('future-skills')">Start Learning</button>
-                </div>
-            </div>
-        </section>
 
-        <!-- Course Learning Interface -->
-        <section id="course-learn" class="course-learn-section" style="display: none;">
-            <div class="learn-container">
-                <!-- Sidebar -->
-                <aside class="learn-sidebar glass-card">
-                    <div class="sidebar-header">
-                        <button class="btn-back" onclick="showSection('courses')">← Back to Courses</button>
-                        <h3 id="currentCourseTitle">Course Title</h3>
-                        <p id="currentCourseSubtitle" class="course-subtitle">Course subtitle</p>
-                    </div>
-                    
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span>Progress</span>
-                            <span id="courseProgress">0%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="modules-list" id="modulesList">
-                        <!-- Dynamic modules -->
-                    </div>
-                </aside>
-                
-                <!-- Main Content -->
-                <main class="learn-main">
-                    <div class="learn-content glass-card">
-                        <div class="lesson-header">
-                            <span class="lesson-number" id="lessonNumber">Lesson 1</span>
-                            <h2 id="lessonTitle">Welcome to the Course</h2>
-                        </div>
-                        
-                        <div class="video-placeholder">
-                            <div class="play-button">▶</div>
-                            <span>Video content would play here</span>
-                        </div>
-                        
-                        <div class="lesson-text" id="lessonText">
-                            <p>Welcome to this course module. In this lesson, you'll learn the fundamental concepts that will help you master these skills.</p>
-                            <p>Follow along with the video and complete the exercises to reinforce your learning.</p>
-                        </div>
-                        
-                        <!-- Quiz Section -->
-                        <div class="quiz-section-container" id="quizSection">
-                            <!-- Quiz will be dynamically loaded -->
-                        </div>
-                        
-                        <div class="lesson-actions">
-                            <button class="btn-glass" id="prevLessonBtn" onclick="prevLesson()">← Previous</button>
-                            <button class="btn-gold" id="nextLessonBtn" onclick="nextLesson()">
-                                <span>Mark Complete & Next</span>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                            </button>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </section>
 
         <!-- Certificates Section -->
         <section id="certificates" class="certificates-section">
@@ -867,17 +685,17 @@ Why add this?
             <div class="dashboard-container">
                 <div class="dashboard-stats">
                     <div class="stat-card glass-card">
-                        <div class="stat-icon">📚</div>
+                        <div class="stat-icon">📄</div>
                         <div class="stat-info">
-                            <span class="stat-value" id="dashCourses">0</span>
-                            <span class="stat-name">Courses Enrolled</span>
+                            <span class="stat-value" id="dashCVs">0</span>
+                            <span class="stat-name">CVs Created</span>
                         </div>
                     </div>
                     <div class="stat-card glass-card">
                         <div class="stat-icon">✅</div>
                         <div class="stat-info">
                             <span class="stat-value" id="dashCompleted">0</span>
-                            <span class="stat-name">Completed</span>
+                            <span class="stat-name">Analysis Done</span>
                         </div>
                     </div>
                     <div class="stat-card glass-card">
@@ -888,19 +706,19 @@ Why add this?
                         </div>
                     </div>
                     <div class="stat-card glass-card">
-                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-icon">⭐</div>
                         <div class="stat-info">
-                            <span class="stat-value" id="dashHours">0</span>
-                            <span class="stat-name">Hours Learned</span>
+                            <span class="stat-value" id="dashScore">0%</span>
+                            <span class="stat-name">Avg ATS Score</span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="dashboard-content">
-                    <div class="enrolled-courses glass-card">
-                        <h3>My Courses</h3>
-                        <div id="enrolledCoursesList">
-                            <p class="empty-state">No courses enrolled yet</p>
+                    <div class="recent-activity glass-card">
+                        <h3>Recent Activity</h3>
+                        <div id="recentActivityList">
+                            <p class="empty-state">No recent activity. Create your first CV!</p>
                         </div>
                     </div>
                     
@@ -919,7 +737,7 @@ Why add this?
                             <div class="achievements-list" id="achievementsList">
                                 <div class="achievement locked">
                                     <span class="achievement-icon">🔒</span>
-                                    <span>Complete first course</span>
+                                    <span>Create your first CV</span>
                                 </div>
                                 <div class="achievement locked">
                                     <span class="achievement-icon">🔒</span>
