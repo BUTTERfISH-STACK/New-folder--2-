@@ -552,56 +552,130 @@ function downloadCV() {
     const doc = new jsPDF();
     const personal = state.cvData.personal;
     
-    // Colors
-    const gold = [212, 175, 55];
-    const darkGold = [184, 134, 11];
-    const white = [255, 255, 255];
-    const gray = [128, 128, 128];
-    const lightGray = [200, 200, 200];
+    // Apply template-specific styling
+    const template = selectedTemplate || 'modern';
     
-    let y = 20;
+    // Template configurations
+    const templates = {
+        modern: {
+            primaryColor: [212, 175, 55],    // Gold
+            secondaryColor: [33, 33, 33],    // Dark gray
+            accentColor: [184, 134, 11],      // Dark gold
+            font: 'helvetica',
+            layout: 'single-column',
+            headerAlign: 'center',
+            showBorder: false
+        },
+        classic: {
+            primaryColor: [0, 0, 0],          // Black
+            secondaryColor: [80, 80, 80],     // Gray
+            accentColor: [100, 100, 100],     // Medium gray
+            font: 'times',
+            layout: 'single-column',
+            headerAlign: 'left',
+            showBorder: true
+        },
+        executive: {
+            primaryColor: [0, 51, 102],       // Navy blue
+            secondaryColor: [128, 128, 128],  // Gray
+            accentColor: [192, 192, 192],      // Silver
+            font: 'helvetica',
+            layout: 'two-column',
+            headerAlign: 'center',
+            showBorder: true
+        },
+        creative: {
+            primaryColor: [255, 107, 107],    // Coral
+            secondaryColor: [64, 64, 64],     // Dark gray
+            accentColor: [255, 195, 0],       // Yellow
+            font: 'helvetica',
+            layout: 'single-column',
+            headerAlign: 'center',
+            showBorder: false
+        },
+        technical: {
+            primaryColor: [0, 100, 80],        // Teal
+            secondaryColor: [70, 70, 70],      // Dark gray
+            accentColor: [0, 150, 136],        // Cyan
+            font: 'courier',
+            layout: 'single-column',
+            headerAlign: 'left',
+            showBorder: false
+        },
+        graduate: {
+            primaryColor: [106, 90, 205],      // Slate blue
+            secondaryColor: [100, 100, 100],   // Gray
+            accentColor: [147, 112, 219],      // Medium purple
+            font: 'helvetica',
+            layout: 'single-column',
+            headerAlign: 'center',
+            showBorder: false
+        }
+    };
     
-    // Name - Gold
-    doc.setTextColor(...gold);
-    doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.text(personal.name || 'Your Name', 105, y, { align: 'center' });
-    y += 10;
+    const config = templates[template] || templates.modern;
+    const { primaryColor, secondaryColor, accentColor, font, layout, headerAlign, showBorder } = config;
     
-    // Title - Dark Gold
-    doc.setTextColor(...darkGold);
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'normal');
-    doc.text(personal.title || 'Professional Title', 105, y, { align: 'center' });
-    y += 12;
+    // Page dimensions
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 20;
+    const contentWidth = pageWidth - (margin * 2);
     
-    // Contact Info - Gray
-    doc.setTextColor(...gray);
-    doc.setFontSize(10);
+    let y = margin;
+    
+    // Add border if template requires
+    if (showBorder) {
+        doc.setDrawColor(...primaryColor);
+        doc.setLineWidth(0.5);
+        doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+    }
+    
+    // Header - Name
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(layout === 'two-column' ? 22 : 24);
+    doc.setFont(font, 'bold');
+    
+    const nameX = headerAlign === 'center' ? pageWidth / 2 : margin;
+    doc.text(personal.name || 'Your Name', nameX, y, { align: headerAlign === 'center' ? 'center' : 'left' });
+    y += 8;
+    
+    // Title
+    doc.setTextColor(...accentColor);
+    doc.setFontSize(layout === 'two-column' ? 12 : 14);
+    doc.setFont(font, 'normal');
+    doc.text(personal.title || 'Professional Title', nameX, y, { align: headerAlign === 'center' ? 'center' : 'left' });
+    y += 8;
+    
+    // Contact Info
+    doc.setTextColor(...secondaryColor);
+    doc.setFontSize(9);
     let contact = [];
     if (personal.email) contact.push(personal.email);
     if (personal.phone) contact.push(personal.phone);
     if (personal.location) contact.push(personal.location);
     if (personal.linkedin) contact.push(personal.linkedin);
-    doc.text(contact.join('  |  '), 105, y, { align: 'center' });
+    
+    const contactText = contact.join('  |  ');
+    doc.text(contactText, nameX, y, { align: headerAlign === 'center' ? 'center' : 'left' });
     y += 10;
     
-    // Gold line
-    doc.setDrawColor(...gold);
+    // Gold/Color line
+    doc.setDrawColor(...primaryColor);
     doc.setLineWidth(0.5);
-    doc.line(20, y, 190, y);
-    y += 10;
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 8;
     
     // Experience Section
     const expItems = document.querySelectorAll('.experience-item');
     if (expItems.length > 0) {
-        // Section Title - Gold
-        doc.setTextColor(...gold);
+        // Section Title
+        doc.setTextColor(...primaryColor);
         doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
-        doc.text('PROFESSIONAL EXPERIENCE', 20, y);
-        y += 6;
-        doc.line(20, y, 190, y);
+        doc.setFont(font, 'bold');
+        doc.text('PROFESSIONAL EXPERIENCE', margin, y);
+        y += 5;
+        doc.line(margin, y, pageWidth - margin, y);
         y += 8;
         
         expItems.forEach(item => {
@@ -612,33 +686,33 @@ function downloadCV() {
             const desc = item.querySelector('.exp-description')?.value || '';
             
             if (title || company) {
-                // Job Title - Bold
+                // Job Title
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(11);
-                doc.setFont('helvetica', 'bold');
-                doc.text(title, 20, y);
+                doc.setFont(font, 'bold');
+                doc.text(title, margin, y);
                 
-                // Dates - Gray
-                doc.setTextColor(...gray);
+                // Dates
+                doc.setTextColor(...secondaryColor);
                 doc.setFontSize(9);
-                doc.setFont('helvetica', 'italic');
+                doc.setFont(font, 'italic');
                 const dates = start && end ? formatDate(start) + ' - ' + formatDate(end) : '';
-                if (dates) doc.text(dates, 190, y, { align: 'right' });
+                if (dates) doc.text(dates, pageWidth - margin, y, { align: 'right' });
                 y += 5;
                 
-                // Company - Gold
-                doc.setTextColor(...darkGold);
+                // Company
+                doc.setTextColor(...accentColor);
                 doc.setFontSize(10);
-                doc.setFont('helvetica', 'normal');
-                doc.text(company, 20, y);
+                doc.setFont(font, 'normal');
+                doc.text(company, margin, y);
                 y += 6;
                 
                 // Description
                 if (desc) {
                     doc.setTextColor(60, 60, 60);
                     doc.setFontSize(9);
-                    const lines = doc.splitTextToSize(desc, 170);
-                    doc.text(lines, 20, y);
+                    const lines = doc.splitTextToSize(desc, contentWidth);
+                    doc.text(lines, margin, y);
                     y += lines.length * 4 + 4;
                 }
                 y += 4;
@@ -650,32 +724,48 @@ function downloadCV() {
     const techSkills = state.cvData.skills.split(',').filter(s => s.trim());
     const softSkills = state.cvData.softSkills.split(',').filter(s => s.trim());
     if (techSkills.length > 0 || softSkills.length > 0) {
-        // Section Title - Gold
-        doc.setTextColor(...gold);
+        // Check if we need a new page
+        if (y > pageHeight - 60) {
+            doc.addPage();
+            y = margin;
+        }
+        
+        // Section Title
+        doc.setTextColor(...primaryColor);
         doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
-        doc.text('SKILLS', 20, y);
-        y += 6;
-        doc.line(20, y, 190, y);
+        doc.setFont(font, 'bold');
+        doc.text('SKILLS', margin, y);
+        y += 5;
+        doc.line(margin, y, pageWidth - margin, y);
         y += 8;
         
         doc.setTextColor(60, 60, 60);
         doc.setFontSize(9);
-        doc.setFont('helvetica', 'normal');
+        doc.setFont(font, 'normal');
         
-        // Technical Skills
         if (techSkills.length > 0) {
+            doc.setFont(font, 'bold');
+            doc.text('Technical:', margin, y);
+            y += 5;
+            doc.setFont(font, 'normal');
             const skillsText = techSkills.map(s => s.trim()).join(', ');
-            const lines = doc.splitTextToSize(skillsText, 170);
-            doc.text(lines, 20, y);
+            const lines = doc.splitTextToSize(skillsText, contentWidth);
+            doc.text(lines, margin, y);
             y += lines.length * 4 + 4;
         }
         
-        // Soft Skills
         if (softSkills.length > 0) {
+            if (y > pageHeight - 40) {
+                doc.addPage();
+                y = margin;
+            }
+            doc.setFont(font, 'bold');
+            doc.text('Soft Skills:', margin, y);
+            y += 5;
+            doc.setFont(font, 'normal');
             const softText = softSkills.map(s => s.trim()).join(', ');
-            const lines = doc.splitTextToSize(softText, 170);
-            doc.text(lines, 20, y);
+            const lines = doc.splitTextToSize(softText, contentWidth);
+            doc.text(lines, margin, y);
             y += lines.length * 4 + 4;
         }
     }
@@ -683,53 +773,73 @@ function downloadCV() {
     // Education Section
     const eduItems = document.querySelectorAll('.education-item');
     if (eduItems.length > 0) {
-        // Section Title - Gold
-        doc.setTextColor(...gold);
+        if (y > pageHeight - 60) {
+            doc.addPage();
+            y = margin;
+        }
+        
+        // Section Title
+        doc.setTextColor(...primaryColor);
         doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
-        doc.text('EDUCATION', 20, y);
-        y += 6;
-        doc.line(20, y, 190, y);
+        doc.setFont(font, 'bold');
+        doc.text('EDUCATION', margin, y);
+        y += 5;
+        doc.line(margin, y, pageWidth - margin, y);
         y += 8;
         
         eduItems.forEach(item => {
             const degree = item.querySelector('.edu-degree')?.value || '';
             const school = item.querySelector('.edu-school')?.value || '';
             const year = item.querySelector('.edu-year')?.value || '';
+            const achievements = item.querySelector('.edu-achievements')?.value || '';
             
             if (degree || school) {
-                // Degree - Bold
+                // Degree
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(11);
-                doc.setFont('helvetica', 'bold');
-                doc.text(degree, 20, y);
+                doc.setFont(font, 'bold');
+                doc.text(degree, margin, y);
                 
-                // Year - Gray
-                doc.setTextColor(...gray);
+                // Year
+                doc.setTextColor(...secondaryColor);
                 doc.setFontSize(9);
-                if (year) doc.text(year, 190, y, { align: 'right' });
+                if (year) doc.text(year, pageWidth - margin, y, { align: 'right' });
                 y += 5;
                 
-                // School - Gold
-                doc.setTextColor(...darkGold);
+                // School
+                doc.setTextColor(...accentColor);
                 doc.setFontSize(10);
-                doc.setFont('helvetica', 'normal');
-                doc.text(school, 20, y);
-                y += 8;
+                doc.setFont(font, 'normal');
+                doc.text(school, margin, y);
+                y += 5;
+                
+                // Achievements
+                if (achievements) {
+                    doc.setTextColor(60, 60, 60);
+                    doc.setFontSize(9);
+                    doc.text(achievements, margin, y);
+                    y += 5;
+                }
+                y += 6;
             }
         });
     }
     
     // Footer
-    doc.setTextColor(...lightGray);
+    doc.setTextColor(180, 180, 180);
     doc.setFontSize(8);
-    doc.text('Generated by Vellon - AI-Powered Career Platform', 105, 285, { align: 'center' });
+    doc.text('Generated by Vellon - AI-Powered Career Platform', pageWidth / 2, pageHeight - 10, { align: 'center' });
+    
+    // Add template watermark
+    doc.setTextColor(220, 220, 220);
+    doc.setFontSize(6);
+    doc.text('Template: ' + template.charAt(0).toUpperCase() + template.slice(1), pageWidth / 2, pageHeight - 5, { align: 'center' });
     
     // Save PDF
-    const filename = (personal.name || 'CV').replace(/\s+/g, '_') + '_CV.pdf';
+    const filename = (personal.name || 'CV').replace(/\s+/g, '_') + '_' + template.charAt(0).toUpperCase() + template.slice(1) + '.pdf';
     doc.save(filename);
     
-    showToast('CV downloaded as PDF!');
+    showToast('CV downloaded as PDF (' + template + ' template)!');
 }
 
 // Certificate Functions - Enhanced
@@ -762,50 +872,160 @@ function downloadCertificate() {
     
     const studentName = personal.name || 'Student';
     const completedDate = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    const certId = `VEL-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
-    const duration = course?.duration || '32 Hours';
+    const certId = 'VEL-' + new Date().getFullYear() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+    const courseName = 'AI & Tech Entrepreneur Course';
     
-    const content = `
-╔════════════════════════════════════════════════════════════════════════════╗
-║                                                                            ║
-║                        ✦ VELLON CERTIFICATE ✦                              ║
-║                        of Completion                                       ║
-║                                                                            ║
-╠════════════════════════════════════════════════════════════════════════════╣
-║                                                                            ║
-║              This is to certify that                                       ║
-║                                                                            ║
-║                    ${studentName.toUpperCase().padEnd(50)}║
-║                                                                            ║
-║              has successfully completed                                    ║
-║                                                                            ║
-║                 CV Builder Program.                                         ║
-║                                                                            ║
-║              Duration: ${duration.padEnd(40)}║
-║              Date: ${completedDate.padEnd(45)}║
-║                                                                            ║
-╠════════════════════════════════════════════════════════════════════════════╣
-║                                                                            ║
-║        Certificate ID: ${certId.padEnd(47)}║
-║                                                                            ║
-║                    ✦ VELLON ✦                                             ║
-║            AI-Powered Career Platform                                     ║
-║                    vellon.ai                                               ║
-║                                                                            ║
-╚════════════════════════════════════════════════════════════════════════════╝
+    // Generate PDF using jsPDF
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
     
-VERIFICATION: Visit vellon.ai/verify and enter Certificate ID: ${certId}
-    `;
+    // Certificate template configuration
+    const certConfig = {
+        primaryColor: [212, 175, 55],  // Gold
+        secondaryColor: [33, 33, 33],   // Dark gray
+        accentColor: [184, 134, 11]     // Dark gold
+    };
     
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Vellon_Certificate_${studentName.replace(/\s+/g, '_')}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+    const primaryColor = certConfig.primaryColor;
+    const secondaryColor = certConfig.secondaryColor;
+    const accentColor = certConfig.accentColor;
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 25;
+    
+    // Background
+    doc.setFillColor(250, 250, 250);
+    doc.rect(0, 0, pageWidth, pageHeight, 'F');
+    
+    // Border
+    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setLineWidth(1);
+    doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
+    
+    // Inner border
+    doc.setLineWidth(0.3);
+    doc.rect(18, 18, pageWidth - 36, pageHeight - 36);
+    
+    let y = 45;
+    
+    // Logo/Header symbol
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setFontSize(40);
+    doc.setFont('helvetica', 'bold');
+    doc.text('✦', pageWidth / 2, y, { align: 'center' });
+    y += 15;
+    
+    // VELLON text
+    doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
+    doc.setFontSize(28);
+    doc.setFont('helvetica', 'bold');
+    doc.text('VELLON', pageWidth / 2, y, { align: 'center' });
+    y += 15;
+    
+    // Subtitle
+    doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.text('AI-Powered Career Platform', pageWidth / 2, y, { align: 'center' });
+    y += 20;
+    
+    // Certificate title
+    doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Certificate of Completion', pageWidth / 2, y, { align: 'center' });
+    y += 25;
+    
+    // Decorative line
+    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setLineWidth(0.5);
+    doc.line(margin + 30, y, pageWidth - margin - 30, y);
+    y += 20;
+    
+    // This is to certify that
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.text('This is to certify that', pageWidth / 2, y, { align: 'center' });
+    y += 15;
+    
+    // Student Name
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setFontSize(24);
+    doc.setFont('helvetica', 'bold');
+    doc.text(studentName.toUpperCase(), pageWidth / 2, y, { align: 'center' });
+    y += 20;
+    
+    // Name underline
+    doc.setDrawColor(accentColor[0], accentColor[1], accentColor[2]);
+    doc.setLineWidth(0.5);
+    doc.line(margin + 20, y - 5, pageWidth - margin - 20, y - 5);
+    
+    // has successfully completed
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.text('has successfully completed', pageWidth / 2, y + 10, { align: 'center' });
+    y += 30;
+    
+    // Course Name
+    doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text(courseName, pageWidth / 2, y, { align: 'center' });
+    y += 20;
+    
+    // Date
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.text(completedDate, pageWidth / 2, y, { align: 'center' });
+    y += 30;
+    
+    // Certificate ID
+    doc.setDrawColor(200, 200, 200);
+    doc.setLineWidth(0.3);
+    doc.line(margin + 20, y, pageWidth - margin - 20, y);
+    y += 10;
+    
+    doc.setTextColor(150, 150, 150);
+    doc.setFontSize(9);
+    doc.text('Certificate ID: ' + certId, pageWidth / 2, y, { align: 'center' });
+    y += 15;
+    
+    // Verification text
+    doc.setFontSize(8);
+    doc.text('VERIFICATION: Visit vellon.ai/verify and enter Certificate ID above', pageWidth / 2, y, { align: 'center' });
+    
+    // Footer badges area - Signature line
+    y = pageHeight - 55;
+    doc.setDrawColor(200, 200, 200);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, margin + 50, y);
+    doc.line(pageWidth - margin - 50, y, pageWidth - margin, y);
+    
+    y += 8;
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Program Director', margin + 25, y, { align: 'center' });
+    doc.text('Date', pageWidth - margin - 25, y, { align: 'center' });
+    
+    // Verified badge
+    y = 35;
+    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.roundedRect(pageWidth - margin - 35, y - 5, 30, 10, 2, 2, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'bold');
+    doc.text('VERIFIED', pageWidth - margin - 20, y, { align: 'center' });
+    
+    // Save PDF
+    doc.save('Vellon_Certificate_' + studentName.replace(/ /g, '_') + '.pdf');
+    
+    // Update certificate ID display
+    const certIdEl = document.getElementById('certIdDisplay');
+    if (certIdEl) certIdEl.textContent = certId;
     
     showToast('Certificate downloaded!');
 }
