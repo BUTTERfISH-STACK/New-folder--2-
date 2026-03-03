@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  cvs            Cv[]
+  enrollments   Enrollment[]
+  progress      Progress[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// CV Model
+model Cv {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  data        String   // JSON stringified CV data
+  template    String   @default("modern")
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Course Model
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  thumbnail   String?
+  price       Float    @default(0)
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  modules     Module[]
+  enrollments Enrollment[]
+}
+
+// Module Model
+model Module {
+  id        String   @id @default(cuid())
+  courseId  String
+  title     String
+  slug      String
+  content   String   // Markdown content
+  videoUrl  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  quizzes   Quiz[]
+  progress  Progress[]
+}
+
+model Quiz {
+  id        String   @id @default(cuid())
+  moduleId  String
+  question  String
+  options   String   // JSON array of options
+  answer    Int      // Index of correct answer
+  order     Int      @default(0)
+
+  // Relations
+  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+// Enrollment Model
+model Enrollment {
+  id        String   @id @default(cuid())
+  userId    String
+  courseId  String
+  enrolledAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+}
+
+// Progress Model
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  moduleId    String
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  quizScore   Int?
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleId])
+}

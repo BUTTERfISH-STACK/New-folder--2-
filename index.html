@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vellon - AI-Powered Career Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-gradient">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+    <div class="noise-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showSection('home')">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">Vellon</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="#features" class="nav-link" onclick="showSection('features')">Features</a>
+                <a href="#cv-builder" class="nav-link" onclick="showSection('cv-builder')">CV Redo</a>
+                <a href="#cv-intelligence" class="nav-link" onclick="showSection('cv-intelligence')">AI Analysis</a>
+                <a href="#courses" class="nav-link" onclick="showSection('courses')">Courses</a>
+                <a href="#certificates" class="nav-link" onclick="showSection('certificates')">Certificates</a>
+            </div>
+            
+            <div class="nav-actions">
+                <div id="authButtons">
+                    <button class="btn-glass btn-glass-sm" onclick="showAuthModal()">Sign In</button>
+                    <button class="btn-gold btn-gold-sm" onclick="showSection('cv-builder')">Get Started</button>
+                </div>
+                <div id="userMenu" class="user-menu" style="display: none;">
+                    <button class="user-avatar" onclick="toggleUserDropdown()">
+                        <span class="avatar-text">U</span>
+                    </button>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="#dashboard" onclick="showSection('dashboard')">Dashboard</a>
+                        <a href="#certificates" onclick="showSection('certificates')">My Certificates</a>
+                        <a href="#" onclick="logout()">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section active">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="badge-dot"></span>
+                        <span>AI-Powered Career Platform</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Build Your <span class="gold-gradient">Future</span><br>
+                        With <span class="gold-gradient">AI</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Transform your career with our AI CV optimization tool and cutting-edge 
+                        tech entrepreneurship course. Get certified and stand out.
+                    </p>
+                    <div class="hero-buttons">
+                        <button class="btn-gold" onclick="showSection('cv-builder')">
+                            <span>Redo My CV</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                        <button class="btn-glass" onclick="showSection('courses')">
+                            <span>Start Learning AI</span>
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">50K+</span>
+                            <span class="stat-label">CVs Optimized</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">10K+</span>
+                            <span class="stat-label">Students</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">98%</span>
+                            <span class="stat-label">Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="glass-card hero-card-1">
+                        <div class="card-icon">📄</div>
+                        <span>AI CV Optimization</span>
+                    </div>
+                    <div class="glass-card hero-card-2">
+                        <div class="card-icon">🎓</div>
+                        <span>Course Certificate</span>
+                    </div>
+                    <div class="glass-card hero-card-3">
+                        <div class="card-icon">⚡</div>
+                        <span>Instant Results</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Floating Particles -->
+            <div class="particles" id="particles"></div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose <span class="gold-gradient">Vellon</span></h2>
+                <p class="section-subtitle">Premium tools to accelerate your career growth</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card glass-card" onclick="showSection('cv-builder')">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI CV Optimization</h3>
+                    <p>Our AI analyzes and enhances your CV for maximum impact. ATS-optimized templates ensure you pass every screening.</p>
+                    <div class="feature-glow"></div>
+                </div>
+                
+                <div class="feature-card glass-card" onclick="showSection('cv-builder')">
+                    <div class="feature-icon">📋</div>
+                    <h3>ATS-Ready Templates</h3>
+                    <p>Professional templates designed to pass Applicant Tracking Systems. Stand out to recruiters and hiring managers.</p>
+                    <div class="feature-glow"></div>
+                </div>
+                
+                <div class="feature-card glass-card" onclick="showSection('courses')">
+                    <div class="feature-icon">🚀</div>
+                    <h3>AI & Tech Entrepreneur Course</h3>
+                    <p>Master AI tools, build digital products, and learn future-proof tech skills. Transform your career in 2026.</p>
+                    <div class="feature-glow"></div>
+                </div>
+                
+                <div class="feature-card glass-card" onclick="showSection('certificates')">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Certificate Issuance</h3>
+                    <p>Earn verifiable certificates to showcase your skills. Download as PDF and share on LinkedIn.</p>
+                    <div class="feature-glow"></div>
+                </div>
+                
+                <div class="feature-card glass-card" onclick="showSection('dashboard')">
+                    <div class="feature-icon">📊</div>
+                    <h3>Clean Dashboard</h3>
+                    <p>Track your progress, manage your certificates, and monitor your learning journey in one place.</p>
+                    <div class="feature-glow"></div>
+                </div>
+                
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Secure Authentication</h3>
+                    <p>Sign in with Google or email. Your data is encrypted and protected at all times.</p>
+                    <div class="feature-glow"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CV Builder Section -->
+        <section id="cv-builder" class="cv-builder-section">
+            <div class="section-header">
+                <h2 class="section-title">CV <span class="gold-gradient">Redo</span></h2>
+                <p class="section-subtitle">Build a professional CV in minutes with AI assistance</p>
+            </div>
+            
+            <div class="cv-builder-container">
+                <!-- Progress Steps -->
+                <div class="cv-steps">
+                    <div class="cv-step active" data-step="1">
+                        <div class="step-number">
+                            <span>1</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span>Personal</span>
+                    </div>
+                    <div class="cv-step" data-step="2">
+                        <div class="step-number">
+                            <span>2</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span>Experience</span>
+                    </div>
+                    <div class="cv-step" data-step="3">
+                        <div class="step-number">
+                            <span>3</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span>Skills</span>
+                    </div>
+                    <div class="cv-step" data-step="4">
+                        <div class="step-number">
+                            <span>4</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span>Education</span>
+                    </div>
+                    <div class="cv-step" data-step="5">
+                        <div class="step-number">
+                            <span>5</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span>AI Enhance</span>
+                    </div>
+                </div>
+                
+                <div class="cv-builder-content">
+                    <!-- Form Panel -->
+                    <div class="cv-form-panel glass-card">
+                        <!-- Step 1: Personal Details -->
+                        <div class="cv-form-step active" data-step="1">
+                            <h3><span class="step-icon">👤</span> Personal Details</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="cvName" placeholder="John Doe" oninput="saveCVData()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Job Title</label>
+                                    <input type="text" id="cvTitle" placeholder="Software Engineer" oninput="saveCVData()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="cvEmail" placeholder="john@example.com" oninput="saveCVData()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="tel" id="cvPhone" placeholder="+1 234 567 8900" oninput="saveCVData()">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Location</label>
+                                    <input type="text" id="cvLocation" placeholder="San Francisco, CA" oninput="saveCVData()">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>LinkedIn URL</label>
+                                    <input type="url" id="cvLinkedIn" placeholder="linkedin.com/in/johndoe" oninput="saveCVData()">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-gold" onclick="nextCVStep()">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Experience -->
+                        <div class="cv-form-step" data-step="2">
+                            <h3><span class="step-icon">💼</span> Professional Experience</h3>
+                            <div id="experienceList">
+                                <div class="experience-item">
+                                    <div class="item-header">
+                                        <h4>Experience #1</h4>
+                                        <button class="btn-delete-item" onclick="removeExperience(this)" title="Remove">×</button>
+                                    </div>
+                                    <div class="form-grid">
+                                        <div class="form-group full-width">
+                                            <label>Job Title <span class="required">*</span></label>
+                                            <input type="text" class="exp-title" placeholder="Senior Software Engineer" oninput="saveCVData()">
+                                        </div>
+                                        <div class="form-group full-width">
+                                            <label>Company</label>
+                                            <input type="text" class="exp-company" placeholder="Tech Corp Inc." oninput="saveCVData()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Start Date</label>
+                                            <input type="month" class="exp-start" oninput="saveCVData()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>End Date</label>
+                                            <input type="month" class="exp-end" placeholder="Present" oninput="saveCVData()">
+                                        </div>
+                                        <div class="form-group full-width">
+                                            <label>Achievements & Responsibilities</label>
+                                            <textarea class="exp-description" rows="4" placeholder="• Led development of microservices\n• Increased system performance by 40%" oninput="saveCVData()"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-add-more" onclick="addExperience()">+ Add Another Experience</button>
+                            <div class="form-actions">
+                                <button class="btn-glass" onclick="prevCVStep()">Back</button>
+                                <button class="btn-gold" onclick="nextCVStep()">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Skills -->
+                        <div class="cv-form-step" data-step="3">
+                            <h3><span class="step-icon">⚡</span> Skills & Competencies</h3>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label>Technical Skills</label>
+                                    <textarea id="cvSkills" rows="4" placeholder="Python, JavaScript, React, AWS, Docker, Kubernetes, Machine Learning..." oninput="saveCVData()"></textarea>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Soft Skills</label>
+                                    <textarea id="cvSoftSkills" rows="3" placeholder="Leadership, Communication, Problem Solving..." oninput="saveCVData()"></textarea>
+                                </div>
+                            </div>
+                            <div class="ats-score">
+                                <span class="ats-label">ATS Score:</span>
+                                <div class="ats-bar">
+                                    <div class="ats-fill" id="atsScore" style="width: 0%">0%</div>
+                                </div>
+                                <div class="ats-tips">
+                                    <ul>
+                                        <li>Add 5+ technical skills for better scoring</li>
+                                        <li>Include quantifiable achievements</li>
+                                        <li>Add your LinkedIn profile URL</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-glass" onclick="prevCVStep()">Back</button>
+                                <button class="btn-gold" onclick="nextCVStep()">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Education -->
+                        <div class="cv-form-step" data-step="4">
+                            <h3><span class="step-icon">🎓</span> Education</h3>
+                            <div id="educationList">
+                                <div class="education-item">
+                                    <div class="item-header">
+                                        <h4>Education #1</h4>
+                                        <button class="btn-delete-item" onclick="removeEducation(this)" title="Remove">×</button>
+                                    </div>
+                                    <div class="form-grid">
+                                        <div class="form-group full-width">
+                                            <label>Degree <span class="required">*</span></label>
+                                            <input type="text" class="edu-degree" placeholder="Master of Computer Science" oninput="saveCVData()">
+                                        </div>
+                                        <div class="form-group full-width">
+                                            <label>Institution</label>
+                                            <input type="text" class="edu-school" placeholder="Stanford University" oninput="saveCVData()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Graduation Year</label>
+                                            <input type="number" class="edu-year" placeholder="2024" oninput="saveCVData()">
+                                        </div>
+                                        <div class="form-group full-width">
+                                            <label>Achievements (Optional)</label>
+                                            <input type="text" class="edu-achievements" placeholder="Dean's List, Thesis Award..." oninput="saveCVData()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-add-more" onclick="addEducation()">+ Add Education</button>
+                            <div class="form-actions">
+                                <button class="btn-glass" onclick="prevCVStep()">Back</button>
+                                <button class="btn-gold" onclick="nextCVStep()">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 5: AI Enhancement -->
+                        <div class="cv-form-step" data-step="5">
+                            <h3><span class="step-icon">🤖</span> AI Enhancement</h3>
+                            <div class="ai-suggestions">
+                                <div class="ai-suggestion-item">
+                                    <div class="ai-badge">AI Suggestion</div>
+                                    <p>Add quantifiable achievements to stand out. Use numbers like "40% increase" or "$100K saved".</p>
+                                </div>
+                                <div class="ai-suggestion-item">
+                                    <div class="ai-badge">AI Suggestion</div>
+                                    <p>Include relevant keywords from job descriptions to pass ATS systems.</p>
+                                </div>
+                                <div class="ai-suggestion-item">
+                                    <div class="ai-badge">AI Suggestion</div>
+                                    <p>Keep your CV concise - 2 pages maximum for experienced professionals.</p>
+                                </div>
+                            </div>
+                            <div class="keyword-analysis">
+                                <h4>Keyword Analysis</h4>
+                                <div class="keywords" id="keywordSuggestions">
+                                    <span class="keyword">Leadership</span>
+                                    <span class="keyword">Agile</span>
+                                    <span class="keyword">AWS</span>
+                                    <span class="keyword">Python</span>
+                                    <span class="keyword">Machine Learning</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-glass" onclick="prevCVStep()">Back</button>
+                                <button class="btn-gold" onclick="downloadCV()">
+                                    <span>Download CV</span>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview Panel -->
+                    <div class="cv-preview-panel glass-card">
+                        <div class="preview-header">
+                            <h3>Live Preview</h3>
+                            <div class="preview-badge">Free</div>
+                        </div>
+                        <div class="cv-preview" id="cvPreview">
+                            <div class="preview-name">Your Name</div>
+                            <div class="preview-title">Job Title</div>
+                            <div class="preview-contact"></div>
+                            <div class="preview-section">
+                                <h4>Experience</h4>
+                                <div class="preview-experience"></div>
+                            </div>
+                            <div class="preview-section">
+                                <h4>Skills</h4>
+                                <div class="preview-skills"></div>
+                            </div>
+                            <div class="preview-section">
+                                <h4>Education</h4>
+                                <div class="preview-education"></div>
+                            </div>
+                            <div class="preview-watermark">Vellon - Free Version</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CV Intelligence Section -->
+        <section id="cv-intelligence" class="cv-intelligence-section">
+            <div class="section-header">
+                <h2 class="section-title">CV <span class="gold-gradient">Intelligence</span></h2>
+                <p class="section-subtitle">AI-powered analysis to optimize your CV for ATS and maximum impact</p>
+            </div>
+            
+            <div class="intelligence-input-panel glass-card">
+                <h3><span class="icon">🔍</span> Analyze Your CV</h3>
+                
+                <div class="input-group">
+                    <label>Paste Your CV Content</label>
+                    <textarea id="cvInputText" placeholder="Paste your CV/resume text here...
+
+Example:
+John Doe
+Software Engineer
+john.doe@email.com
+
+EXPERIENCE
+Senior Software Engineer at Tech Corp
+- Led development of microservices architecture
+- Improved system performance by 40%
+- Managed team of 5 developers
+
+SKILLS
+Python, JavaScript, React, AWS, Docker"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>Target Job Description (Optional - for role-specific optimization)</label>
+                    <textarea id="jobDescriptionText" rows="4" placeholder="Paste the job description here to optimize your CV specifically for this role..."></textarea>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Industry</label>
+                        <select id="industrySelect">
+                            <option value="tech">Technology</option>
+                            <option value="finance">Finance</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="general">General</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Experience Level</label>
+                        <select id="experienceSelect">
+                            <option value="entry">Entry Level (0-2 years)</option>
+                            <option value="mid">Mid Level (3-5 years)</option>
+                            <option value="senior">Senior (6-10 years)</option>
+                            <option value="executive">Executive (10+ years)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="pro-mode-toggle">
+                    <input type="checkbox" id="proModeCheck">
+                    <label for="proModeCheck">Enable PRO MODE - Includes LinkedIn optimization, elevator pitch, salary negotiation points, and 90-day strategy</label>
+                </div>
+                
+                <button class="analyze-btn" onclick="runCVAnalysis()">
+                    <span>Analyze CV</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                </button>
+            </div>
+            
+            <!-- Results Container -->
+            <div id="cvIntelligenceResults" class="intelligence-dashboard"></div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="courses-section">
+            <div class="section-header">
+                <h2 class="section-title">AI & Tech <span class="gold-gradient">Entrepreneur</span></h2>
+                <p class="section-subtitle">Master the skills of the future</p>
+            </div>
+            
+            <div class="courses-grid">
+                <div class="course-card glass-card" data-course="ai-foundations">
+                    <div class="course-header">
+                        <div class="course-icon">🧠</div>
+                        <div class="course-badge">Module 1</div>
+                    </div>
+                    <h3>AI Foundations</h3>
+                    <p>Understand the fundamentals of AI, machine learning, and how to leverage AI tools for business.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 8 Hours</span>
+                        <span>📚 12 Lessons</span>
+                    </div>
+                    <button class="btn-course" onclick="startCourse('ai-foundations')">Start Learning</button>
+                </div>
+                
+                <div class="course-card glass-card" data-course="ai-productivity">
+                    <div class="course-header">
+                        <div class="course-icon">⚡</div>
+                        <div class="course-badge">Module 2</div>
+                    </div>
+                    <h3>AI Productivity Tools</h3>
+                    <p>Master AI-powered tools to 10x your productivity. Learn ChatGPT, Claude, and more.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 6 Hours</span>
+                        <span>📚 10 Lessons</span>
+                    </div>
+                    <button class="btn-course" onclick="startCourse('ai-productivity')">Start Learning</button>
+                </div>
+                
+                <div class="course-card glass-card" data-course="digital-products">
+                    <div class="course-header">
+                        <div class="course-icon">💼</div>
+                        <div class="course-badge">Module 3</div>
+                    </div>
+                    <h3>Building Digital Products</h3>
+                    <p>Learn to build and launch digital products. From idea to MVP in weeks, not months.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 10 Hours</span>
+                        <span>📚 15 Lessons</span>
+                    </div>
+                    <button class="btn-course" onclick="startCourse('digital-products')">Start Learning</button>
+                </div>
+                
+                <div class="course-card glass-card" data-course="future-skills">
+                    <div class="course-header">
+                        <div class="course-icon">🔮</div>
+                        <div class="course-badge">Module 4</div>
+                    </div>
+                    <h3>Future-Proof Tech Skills</h3>
+                    <p>Stay ahead with skills that will matter in 2026 and beyond. No-code, automation, and more.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 8 Hours</span>
+                        <span>📚 12 Lessons</span>
+                    </div>
+                    <button class="btn-course" onclick="startCourse('future-skills')">Start Learning</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Learning Interface -->
+        <section id="course-learn" class="course-learn-section" style="display: none;">
+            <div class="learn-container">
+                <!-- Sidebar -->
+                <aside class="learn-sidebar glass-card">
+                    <div class="sidebar-header">
+                        <button class="btn-back" onclick="showSection('courses')">← Back to Courses</button>
+                        <h3 id="currentCourseTitle">Course Title</h3>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <span id="courseProgress">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="modules-list" id="modulesList">
+                        <!-- Dynamic modules -->
+                    </div>
+                </aside>
+                
+                <!-- Main Content -->
+                <main class="learn-main">
+                    <div class="learn-content glass-card">
+                        <div class="lesson-header">
+                            <span class="lesson-number" id="lessonNumber">Lesson 1</span>
+                            <h2 id="lessonTitle">Welcome to the Course</h2>
+                        </div>
+                        
+                        <div class="video-placeholder">
+                            <div class="play-button">▶</div>
+                            <span>Video content would play here</span>
+                        </div>
+                        
+                        <div class="lesson-text" id="lessonText">
+                            <p>Welcome to this course module. In this lesson, you'll learn the fundamental concepts that will help you master these skills.</p>
+                            <p>Follow along with the video and complete the exercises to reinforce your learning.</p>
+                        </div>
+                        
+                        <div class="lesson-actions">
+                            <button class="btn-glass" id="prevLessonBtn" onclick="prevLesson()">← Previous</button>
+                            <button class="btn-gold" id="nextLessonBtn" onclick="nextLesson()">
+                                <span>Mark Complete & Next</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </section>
+
+        <!-- Certificates Section -->
+        <section id="certificates" class="certificates-section">
+            <div class="section-header">
+                <h2 class="section-title">Your <span class="gold-gradient">Certificates</span></h2>
+                <p class="section-subtitle">Showcase your achievements</p>
+            </div>
+            
+            <div class="certificates-grid" id="certificatesGrid">
+                <div class="certificate-preview glass-card">
+                    <div class="certificate-content">
+                        <div class="cert-header">
+                            <div class="cert-logo">✦ Vellon</div>
+                            <div class="cert-title">Certificate of Completion</div>
+                        </div>
+                        <div class="cert-body">
+                            <p class="cert-presented">This is to certify that</p>
+                            <h2 class="cert-name" id="certName">Your Name</h2>
+                            <p class="cert-course">has successfully completed</p>
+                            <h3 class="cert-course-name">AI & Tech Entrepreneur Course</h3>
+                            <p class="cert-date" id="certDate">March 2026</p>
+                        </div>
+                        <div class="cert-footer">
+                            <div class="cert-signature">
+                                <div class="signature-line"></div>
+                                <span>Program Director</span>
+                            </div>
+                            <div class="cert-id">
+                                <span>ID: VEL-2026-XXXXX</span>
+                                <div class="qr-placeholder">⬜</div>
+                            </div>
+                        </div>
+                        <div class="cert-badge">VERIFIED</div>
+                    </div>
+                    <div class="cert-actions">
+                        <button class="btn-gold" onclick="downloadCertificate()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                            Download PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="verify-section glass-card">
+                <h3>Verify a Certificate</h3>
+                <p>Enter a certificate ID to verify its authenticity</p>
+                <div class="verify-form">
+                    <input type="text" placeholder="Enter Certificate ID (e.g., VEL-2026-XXXXX)" id="verifyInput">
+                    <button class="btn-gold" onclick="verifyCertificate()">Verify</button>
+                </div>
+                <div class="verify-result" id="verifyResult"></div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="dashboard-section">
+            <div class="section-header">
+                <h2 class="section-title">Your <span class="gold-gradient">Dashboard</span></h2>
+                <p class="section-subtitle">Track your progress</p>
+            </div>
+            
+            <div class="dashboard-container">
+                <div class="dashboard-stats">
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="dashCourses">0</span>
+                            <span class="stat-name">Courses Enrolled</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="dashCompleted">0</span>
+                            <span class="stat-name">Completed</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="dashCertificates">0</span>
+                            <span class="stat-name">Certificates</span>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="dashHours">0</span>
+                            <span class="stat-name">Hours Learned</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="enrolled-courses glass-card">
+                        <h3>My Courses</h3>
+                        <div id="enrolledCoursesList">
+                            <p class="empty-state">No courses enrolled yet</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-sidebar">
+                        <div class="profile-card glass-card">
+                            <div class="profile-avatar" id="userAvatar">
+                                <span>U</span>
+                            </div>
+                            <h4 id="userName">User</h4>
+                            <p id="userEmail">user@example.com</p>
+                            <button class="btn-glass btn-sm" onclick="showSection('cv-builder')">Build CV</button>
+                        </div>
+                        
+                        <div class="achievements-card glass-card">
+                            <h4>Achievements</h4>
+                            <div class="achievements-list" id="achievementsList">
+                                <div class="achievement locked">
+                                    <span class="achievement-icon">🔒</span>
+                                    <span>Complete first course</span>
+                                </div>
+                                <div class="achievement locked">
+                                    <span class="achievement-icon">🔒</span>
+                                    <span>Get your first certificate</span>
+                                </div>
+                                <div class="achievement locked">
+                                    <span class="achievement-icon">🔒</span>
+                                    <span>Optimize your CV</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal glass-card">
+            <button class="modal-close" onclick="closeAuthModal()">×</button>
+            <div class="modal-header">
+                <h2>Welcome to <span class="gold-gradient">Vellon</span></h2>
+                <p>Sign in to access your dashboard</p>
+            </div>
+            
+            <div class="auth-options">
+                <div id="g_id_onload"
+                     data-client_id="684607734425-p3tnalfhd71f14aaienlhpfeo3s92pfs.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleSignIn"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="filled_black"
+                     data-text="signin_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
+                
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                
+                <form class="auth-form" onsubmit="handleEmailLogin(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-gold btn-full">Sign In</button>
+                </form>
+            </div>
+            
+            <p class="auth-footer">
+                Don't have an account? <a href="#" onclick="switchAuthMode()">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">✓</span>
+        <span class="toast-message">Message</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="cv-intelligence.js"></script>
+    <script src="script.js?v=20260303"></script>
+</body>
+</html>

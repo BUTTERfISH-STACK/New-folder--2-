@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusAI - Your Private Super AI | ChatGPT + Midjourney + Perplexity</title>
+    <meta name="description" content="NexusAI: Self-hosted AI platform with ChatGPT, Midjourney, Perplexity, Flux image generation, RAG, voice mode, agents, and web search. 100% private, runs on your server.">
+    <meta name="keywords" content="AI, SaaS, ChatGPT, Midjourney, Perplexity, self-hosted AI, local AI, open webui, Ollama, AI platform">
+    <meta property="og:title" content="NexusAI - Your Private Super AI">
+    <meta property="og:description" content="ChatGPT + Midjourney + Perplexity, 100% yours. Unlimited local & cloud models, built-in image gen, RAG, voice mode, and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NexusAI - Your Private Super AI">
+    <meta name="twitter:description" content="ChatGPT + Midjourney + Perplexity, 100% yours.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neon: {
+                            cyan: '#00f5ff',
+                            purple: '#b400ff',
+                            pink: '#ff00aa',
+                            green: '#00ff88',
+                            blue: '#0080ff',
+                            orange: '#ff6600',
+                        },
+                        dark: {
+                            bg: '#0a0a0f',
+                            card: '#12121a',
+                            border: '#1e1e2e',
+                            muted: '#6b7280',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(0, 245, 255, 0.3)' },
+                            '100%': { boxShadow: '0 0 40px rgba(0, 245, 255, 0.6)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #00f5ff 0%, #b400ff 50%, #ff00aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .neon-border {
+            border: 1px solid transparent;
+            background: linear-gradient(#12121a, #12121a) padding-box,
+                        linear-gradient(135deg, #00f5ff, #b400ff, #ff00aa) border-box;
+        }
+        .card-glow:hover {
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+        }
+        .faq-item { transition: all 0.3s ease; }
+        .faq-item:hover { background: rgba(0, 245, 255, 0.05); }
+        .pricing-card { transition: all 0.3s ease; }
+        .pricing-card:hover { transform: translateY(-8px); }
+        
+        /* Confetti styles */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            z-index: 9999;
+            animation: confetti-fall 3s linear forwards;
+        }
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #00f5ff; border-radius: 4px; }
+        
+        /* Gradient background */
+        .hero-bg {
+            background: 
+                radial-gradient(ellipse at top, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(180, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(255, 0, 170, 0.05) 0%, transparent 50%),
+                #0a0a0f;
+        }
+    </style>
+</head>
+<body class="hero-bg text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-dark-bg/80 backdrop-blur-lg border-b border-dark-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">NexusAI</span>
+                </div>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="text-gray-300 hover:text-neon-cyan transition">Features</a>
+                    <a href="#how-it-works" class="text-gray-300 hover:text-neon-cyan transition">How it Works</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-neon-cyan transition">Pricing</a>
+                    <a href="#testimonials" class="text-gray-300 hover:text-neon-cyan transition">Testimonials</a>
+                    <a href="#faq" class="text-gray-300 hover:text-neon-cyan transition">FAQ</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="#pricing" class="hidden sm:block px-4 py-2 text-sm font-medium text-neon-cyan hover:bg-neon-cyan/10 rounded-lg transition">
+                        Sign In
+                    </a>
+                    <a href="#pricing" class="px-4 py-2 text-sm font-semibold bg-gradient-to-r from-neon-cyan to-neon-purple rounded-lg hover:opacity-90 transition shadow-lg shadow-neon-cyan/25">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <!-- Trust Bar -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-card border border-dark-border mb-8">
+                <span class="flex h-2 w-2 rounded-full bg-neon-green animate-pulse"></span>
+                <span class="text-sm text-gray-300">Trusted by 12,347 indie hackers & teams</span>
+                <span class="text-gray-500">•</span>
+                <span class="text-sm text-gray-400">Open-source</span>
+                <span class="text-gray-500">•</span>
+                <span class="text-sm text-gray-400">No data ever leaves your server</span>
+            </div>
+            
+            <!-- Main Headline -->
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                Your Private Super AI — <br>
+                <span class="gradient-text">100% Yours, Forever</span>
+            </h1>
+            
+            <!-- Subheadline -->
+            <p class="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto leading-relaxed">
+                Stop renting. Start owning. Get <span class="text-white font-semibold">ChatGPT + Midjourney + Perplexity</span> in one powerful self-hosted platform. Your data never leaves your server. Ever.
+            </p>
+            
+            <!-- CTAs -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                <a href="#pricing" onclick="triggerConfetti()" class="group relative px-8 py-4 text-lg font-bold bg-gradient-to-r from-neon-cyan to-neon-blue rounded-xl hover:opacity-90 transition-all duration-300 shadow-lg shadow-neon-cyan/30 hover:shadow-neon-cyan/50">
+                    <span class="relative z-10 flex items-center gap-2">
+                        Start Free 14-Day Trial
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </span>
+                    <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue blur-lg opacity-50 group-hover:opacity-75 transition"></div>
+                </a>
+                
+                <a href="#" class="px-8 py-4 text-lg font-semibold text-gray-300 border border-dark-border rounded-xl hover:border-neon-cyan/50 hover:bg-dark-card transition flex items-center gap-2">
+                    <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Deploy in 60 seconds
+                </a>
+                
+                <a href="#" class="px-8 py-4 text-lg font-medium text-gray-400 hover:text-white transition flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Watch 47-sec demo
+                </a>
+            </div>
+            
+            <!-- Hero Image -->
+            <div class="relative max-w-5xl mx-auto">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent z-10"></div>
+                <div class="neon-border rounded-2xl overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=700&fit=crop" 
+                         alt="NexusAI Dashboard" 
+                         class="w-full h-auto">
+                </div>
+                <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 flex gap-4">
+                    <div class="px-4 py-2 bg-dark-card rounded-lg border border-dark-border flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-neon-green"></span>
+                        <span class="text-sm text-gray-300">99.9% Uptime</span>
+                    </div>
+                    <div class="px-4 py-2 bg-dark-card rounded-lg border border-dark-border flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-neon-cyan"></span>
+                        <span class="text-sm text-gray-300">50+ Models</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 bg-dark-card/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-neon-cyan font-semibold tracking-wider uppercase text-sm">Powerful Features</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-2 mb-4">
+                    Everything You Need to <span class="gradient-text">Crush It</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    This isn't just another AI chat. This is your complete AI infrastructure. The kind that makes competitors jealous.
+                </p>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-cyan/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Unlimited Chat Models</h3>
+                    <p class="text-gray-400">Run ChatGPT, Claude, Llama, Mistral & 50+ models locally or in the cloud. Switch instantly. Zero restrictions.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-purple/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-purple/20 to-neon-pink/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Flux & SD3.5 Image Gen</h3>
+                    <p class="text-gray-400">Generate stunning images directly in your dashboard. No external APIs. No monthly fees. Infinite generations.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-pink/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-pink/20 to-neon-orange/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">RAG with Files & Websites</h3>
+                    <p class="text-gray-400">Upload PDFs, docs, or connect entire websites. Ask questions. Get precise answers with citations. Your knowledge base, powered by AI.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-green/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-green/20 to-neon-cyan/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Voice Mode</h3>
+                    <p class="text-gray-400">Talk to your AI. Voice in, voice out. Real-time conversations. Like having a brilliant assistant on speed dial.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-blue/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Web Search</h3>
+                    <p class="text-gray-400">Real-time internet access. Ask about news, prices, or anything happening now. Stay informed. Stay ahead.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-cyan/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-cyan/20 to-neon-green/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">AI Agents</h3>
+                    <p class="text-gray-400">Deploy autonomous agents to automate tasks. Coding, research, content creation — while you sleep.</p>
+                </div>
+                
+                <!-- Feature 7 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-purple/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-purple/20 to-neon-pink/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Multi-User & Teams</h3>
+                    <p class="text-gray-400">Unlimited team members. Role-based access. Admin dashboard. Perfect for agencies and enterprises.</p>
+                </div>
+                
+                <!-- Feature 8 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-pink/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-pink/20 to-neon-orange/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Runs Anywhere</h3>
+                    <p class="text-gray-400">Any server. Any laptop. Cloud or on-premise. Docker, Kubernetes, or bare metal. You're in full control.</p>
+                </div>
+                
+                <!-- Feature 9 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-green/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-green/20 to-neon-cyan/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">100% Private</h3>
+                    <p class="text-gray-400">Your data never leaves your infrastructure. Zero telemetry. Zero tracking. Complete sovereignty.</p>
+                </div>
+                
+                <!-- Feature 10 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-cyan/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-cyan/20 to-neon-blue/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Open WebUI + Ollama</h3>
+                    <p class="text-gray-400">Best-in-class open source interface. Battle-tested by millions. Infinite customization.</p>
+                </div>
+                
+                <!-- Feature 11 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-purple/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-purple/20 to-neon-cyan/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Lightning Fast</h3>
+                    <p class="text-gray-400">GPU acceleration. Optimized inference. Local models run at maximum speed. No API latency.</p>
+                </div>
+                
+                <!-- Feature 12 -->
+                <div class="group p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-neon-pink/30 card-glow transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-pink/20 to-neon-purple/20 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <svg class="w-7 h-7 text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">YouTube & Web RAG</h3>
+                    <p class="text-gray-400">Extract knowledge from YouTube videos, articles, and entire websites. Ask anything. Get precise answers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-neon-purple font-semibold tracking-wider uppercase text-sm">Simple Process</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-2 mb-4">
+                    From Zero to <span class="gradient-text">AI Superpower</span> in Minutes
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    No PhD required. No complex setup. Just deploy and dominate.
+                </p>
+            </div>
+            
+            <!-- Steps -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="relative text-center group">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-cyan to-neon-blue flex items-center justify-center text-3xl font-bold shadow-lg shadow-neon-cyan/30 group-hover:scale-110 transition">
+                        1
+                    </div>
+                    <div class="hidden lg:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple"></div>
+                    <h3 class="text-xl font-bold mb-2">Deploy</h3>
+                    <p class="text-gray-400">Run our one-click installer. Docker pulls everything. 60 seconds. Done.</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="relative text-center group">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-3xl font-bold shadow-lg shadow-neon-purple/30 group-hover:scale-110 transition">
+                        2
+                    </div>
+                    <div class="hidden lg:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-neon-purple to-neon-pink"></div>
+                    <h3 class="text-xl font-bold mb-2">Choose Models</h3>
+                    <p class="text-gray-400">Pick from 50+ models. Local or cloud. Ollama makes it seamless.</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="relative text-center group">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-pink to-neon-orange flex items-center justify-center text-3xl font-bold shadow-lg shadow-neon-pink/30 group-hover:scale-110 transition">
+                        3
+                    </div>
+                    <div class="hidden lg:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-neon-pink to-neon-orange"></div>
+                    <h3 class="text-xl font-bold mb-2">Upload Knowledge</h3>
+                    <p class="text-gray-400">Drop files, connect sites, or sync YouTube. Your AI knows everything.</p>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="relative text-center group">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-3xl font-bold shadow-lg shadow-neon-green/30 group-hover:scale-110 transition">
+                        4
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Profit</h3>
+                    <p class="text-gray-400">Deploy agents, automate work, build products. Watch revenue multiply.</p>
+                </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="text-center mt-12">
+                <a href="#pricing" onclick="triggerConfetti()" class="inline-flex items-center gap-2 px-8 py-4 text-lg font-bold bg-white text-dark-bg rounded-xl hover:bg-gray-100 transition">
+                    Start Your Free Trial
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 px-4 bg-dark-card/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-neon-green font-semibold tracking-wider uppercase text-sm">Simple Pricing</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-2 mb-4">
+                    Start Free. <span class="gradient-text">Scale Fast.</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Pay less than your coffee. Build something that makes you rich.
+                </p>
+                
+                <!-- Annual Toggle -->
+                <div class="mt-8 inline-flex items-center gap-3 px-1 py-1 bg-dark-bg rounded-full">
+                    <button class="px-6 py-2 rounded-full bg-neon-cyan text-dark-bg font-semibold transition">Annual (Save 20%)</button>
+                    <button class="px-6 py-2 rounded-full text-gray-400 hover:text-white transition">Monthly</button>
+                </div>
+            </div>
+            
+            <!-- Pricing Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Free Tier -->
+                <div class="pricing-card p-8 rounded-2xl bg-dark-card border border-dark-border">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-300">Starter</h3>
+                        <div class="mt-4">
+                            <span class="text-4xl font-black">$0</span>
+                            <span class="text-gray-400">/forever</span>
+                        </div>
+                        <p class="mt-2 text-gray-400 text-sm">Perfect for testing and personal use</p>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-gray-300">Self-hosted Open WebUI</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-gray-300">Unlimited local models</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-gray-300">Basic RAG (files)</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-gray-300">Community support</span>
+                        </li>
+                    </ul>
+                    <a href="#" class="block w-full py-3 text-center font-semibold border border-dark-border rounded-xl hover:border-neon-cyan/50 hover:bg-dark-border transition">
+                        Start Free
+                    </a>
+                </div>
+                
+                <!-- Pro Tier -->
+                <div class="pricing-card relative p-8 rounded-2xl bg-dark-card border-2 border-neon-cyan transform scale-105">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-bg text-sm font-bold rounded-full">
+                        MOST POPULAR
+                    </div>
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-bold">Pro</h3>
+                        <div class="mt-4">
+                            <span class="text-4xl font-black">$19</span>
+                            <span class="text-gray-400">/month</span>
+                        </div>
+                        <p class="mt-2 text-gray-400 text-sm">For serious builders & indie hackers</p>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Everything in Starter</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Flux & SD3.5 Image Gen</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Advanced RAG (files + websites + YouTube)</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Voice mode</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">AI Agents</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Web search</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Priority support</span>
+                        </li>
+                    </ul>
+                    <a href="#" onclick="triggerConfetti()" class="block w-full py-3 text-center font-bold bg-gradient-to-r from-neon-cyan to-neon-blue rounded-xl hover:opacity-90 transition shadow-lg shadow-neon-cyan/30">
+                        Start 14-Day Free Trial
+                    </a>
+                    <p class="mt-3 text-center text-xs text-gray-500">No credit card required</p>
+                </div>
+                
+                <!-- Team Tier -->
+                <div class="pricing-card p-8 rounded-2xl bg-dark-card border border-dark-border">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-300">Team</h3>
+                        <div class="mt-4">
+                            <span class="text-4xl font-black">$49</span>
+                            <span class="text-gray-400">/user/month</span>
+                        </div>
+                        <p class="mt-2 text-gray-400 text-sm">For teams, agencies & enterprises</p>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Everything in Pro</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Unlimited team members</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Admin dashboard</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Role-based access control</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">SSO & SAML</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Dedicated support</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-white">Custom integrations</span>
+                        </li>
+                    </ul>
+                    <a href="#" class="block w-full py-3 text-center font-semibold border border-neon-purple rounded-xl hover:bg-neon-purple/10 transition">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Money-back guarantee -->
+            <div class="text-center mt-12">
+                <div class="inline-flex items-center gap-2 px-6 py-3 bg-dark-card rounded-full border border-dark-border">
+                    <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                    <span class="text-gray-300">30-Day Money-Back Guarantee</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-neon-pink font-semibold tracking-wider uppercase text-sm">Real Results</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-2 mb-4">
+                    Join <span class="gradient-text">12,347+</span> Happy Builders
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    These aren't fake testimonials. These are real people building real businesses.
+                </p>
+            </div>
+            
+            <!-- Testimonials Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="p-6 rounded-2xl bg-dark-card border border-dark-border">
+                    <div class="flex items-center gap-1 mb-4">
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <p class="text-gray-300 mb-6">"I built my entire SaaS in 3 weeks using NexusAI. The RAG feature alone saved me hundreds of hours. I made $28k in my first month."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Marcus T." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <div class="font-semibold">Marcus T.</div>
+                            <div class="text-sm text-gray-500">Founder, CodeFlow</div>
+                            <div class="text-xs text-neon-green">Made $28k in Month 1</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="p-6 rounded-2xl bg-dark-card border border-dark-border">
+                    <div class="flex items-center gap-1 mb-4">
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <p class="text-gray-300 mb-6">"We replaced 3 expensive subscriptions with NexusAI. The image generation alone pays for itself 10x over. Our clients are amazed."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" alt="Sarah L." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <div class="font-semibold">Sarah L.</div>
+                            <div class="text-sm text-gray-500">Creative Director</div>
+                            <div class="text-xs text-neon-green">Saved $2,400/month</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="p-6 rounded-2xl bg-dark-card border border-dark-border">
+                    <div class="flex items-center gap-1 mb-4">
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <p class="text-gray-300 mb-6">"As a dev agency, we needed something we could self-host for client data. NexusAI gave us enterprise features at a fraction of the cost."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="David K." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <div class="font-semibold">David K.</div>
+                            <div class="text-sm text-gray-500">CEO, DevAgency Pro</div>
+                            <div class="text-xs text-neon-green">Scaling to $10k MRR</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 4 -->
+                <div class="p-6 rounded-2xl bg-dark-card border border-dark-border">
+                    <div class="flex items-center gap-1 mb-4">
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <p class="text-gray-300 mb-6">"The voice mode is insane. I have full conversations with my AI while driving. It feels like the future is here."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="Jennifer M." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <div class="font-semibold">Jennifer M.</div>
+                            <div class="text-sm text-gray-500">Product Manager</div>
+                            <div class="text-xs text-neon-green">10x productivity</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 5 -->
+                <div class="p-6 rounded-2xl bg-dark-card border border-dark-border md:col-span-2 lg:col-span-1">
+                    <div class="flex items-center gap-1 mb-4">
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg class="w-5 h-5 text-neon-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <p class="text-gray-300 mb-6">"I fed it my entire knowledge base — 10 years of notes, docs, and courses. Now I have a personalized AI that knows everything I know. Game changer."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face" alt="Alex R." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <div class="font-semibold">Alex R.</div>
+                            <div class="text-sm text-gray-500">Indie Hacker</div>
+                            <div class="text-xs text-neon-green">Built in 2 weeks</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 px-4 bg-dark-card/50">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-neon-cyan font-semibold tracking-wider uppercase text-sm">Questions?</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-2 mb-4">
+                    Frequently Asked <span class="gradient-text">Questions</span>
+                </h2>
+            </div>
+            
+            <!-- FAQ Items -->
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">Do I need technical skills to use NexusAI?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">Not at all. Our one-click installer handles everything. If you can click a button, you can deploy NexusAI. We provide detailed guides and video tutorials for every step. Plus, our support team is always ready to help.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 2 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">Is my data really 100% private?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">Absolutely. Zero telemetry. Zero tracking. Zero data leaves your server unless you explicitly choose to connect cloud models. You own everything. We can't see your data even if we wanted to — which we don't.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 3 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">What hardware do I need?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">It depends on your usage. For basic chat with smaller models (7B params), any modern laptop works. For image generation and larger models (70B+), we recommend a dedicated GPU server (NVIDIA preferred). Start small, scale up as needed.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 4 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">Can I use it for commercial purposes?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">Yes! Use it for your business, your clients, your products — completely unlimited. Build SaaS on top of it, sell AI-powered services, embed it in your apps. The only thing you can't do is resell NexusAI itself.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 5 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">How does pricing work?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">Starter is free forever. Pro is $19/month (or $15/month billed annually). Team is $49/user/month. All prices include unlimited usage — no hidden fees, no per-token charges. What you see is what you pay.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 6 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">What models are included?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">All Ollama models: Llama 3, Mistral, CodeLlama, Phi, Gemma, and 50+ more. Plus integration with OpenAI, Anthropic, and Cohere APIs if you want cloud backup. New models added weekly.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 7 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">Is there a free trial?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">Yes! Pro plans come with a 14-day free trial. No credit card required. Test everything — all features, all models. If you love it, stay. If not, walk away. We won't chase you (but we'll miss you).</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 8 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">What about support?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">Pro users get priority email support with 24-hour response time. Team users get dedicated support with 4-hour response time. Plus access to our Discord community with 5,000+ active members helping each other.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 9 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">Can I migrate from other platforms?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">Absolutely. We have import tools for ChatGPT, Claude, and most other platforms. Move your conversation history, custom instructions, and knowledge bases in minutes. We make migration painless.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ 10 -->
+                <div class="faq-item rounded-xl bg-dark-card border border-dark-border overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between" onclick="toggleFaq(this)">
+                        <span class="font-semibold">What's the catch?</span>
+                        <svg class="w-5 h-5 text-gray-400 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-400">There's no catch. We're confident you'll love NexusAI because it's simply better. That's why we offer a 30-day money-back guarantee with no questions asked. Try it. Love it. Or get your money back. Fair is fair.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="py-20 px-4 relative overflow-hidden">
+        <!-- Background effects -->
+        <div class="absolute inset-0 bg-gradient-to-r from-neon-cyan/10 via-neon-purple/10 to-neon-pink/10"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(ellipse at center, rgba(0,245,255,0.15) 0%, transparent 70%);"></div>
+        
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="inline-block px-4 py-1 bg-neon-orange/20 text-neon-orange font-semibold rounded-full text-sm mb-6">
+                ⚡ EARLY-BIRD OFFER
+            </span>
+            
+            <h2 class="text-4xl md:text-6xl font-black mb-6">
+                Stop Renting. <span class="gradient-text">Start Owning.</span>
+            </h2>
+            
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                The AI revolution is happening. Don't be the person who pays monthly for tools they could own forever. 
+                <span class="text-white font-semibold">Lock in the early-bird price before it goes away.</span>
+            </p>
+            
+            <!-- Countdown Timer -->
+            <div class="mb-10">
+                <p class="text-gray-400 mb-4">Early-bird price ends in:</p>
+                <div class="inline-flex items-center gap-4">
+                    <div class="text-center">
+                        <div class="w-20 h-20 rounded-xl bg-dark-card border border-neon-cyan/50 flex items-center justify-center text-3xl font-bold text-neon-cyan" id="countdown-hours">48</div>
+                        <div class="mt-2 text-sm text-gray-500">Hours</div>
+                    </div>
+                    <div class="text-3xl text-gray-500">:</div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 rounded-xl bg-dark-card border border-neon-cyan/50 flex items-center justify-center text-3xl font-bold text-neon-cyan" id="countdown-minutes">00</div>
+                        <div class="mt-2 text-sm text-gray-500">Minutes</div>
+                    </div>
+                    <div class="text-3xl text-gray-500">:</div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 rounded-xl bg-dark-card border border-neon-cyan/50 flex items-center justify-center text-3xl font-bold text-neon-cyan" id="countdown-seconds">00</div>
+                        <div class="mt-2 text-sm text-gray-500">Seconds</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Final CTA -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#pricing" onclick="triggerConfetti()" class="group relative px-10 py-5 text-xl font-bold bg-gradient-to-r from-neon-cyan to-neon-purple rounded-2xl hover:opacity-90 transition-all duration-300 shadow-2xl shadow-neon-cyan/40 hover:shadow-neon-cyan/60">
+                    <span class="relative z-10 flex items-center gap-3">
+                        Get Started Now — It's Free
+                        <svg class="w-6 h-6 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </span>
+                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple blur-xl opacity-50 group-hover:opacity-75 transition"></div>
+                </a>
+            </div>
+            
+            <p class="mt-6 text-gray-500">
+                🔒 No credit card required • 14-day free trial • 30-day money-back guarantee
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-dark-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold gradient-text">NexusAI</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Your Private Super AI. 100% yours. Forever.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-gray-400 hover:text-neon-cyan transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-neon-purple transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-neon-blue transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-neon-pink transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Product -->
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-neon-cyan transition">Features</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-neon-cyan transition">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">Demo</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">Changelog</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">API Reference</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">Community</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company -->
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">About</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">Privacy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-cyan transition">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom -->
+            <div class="pt-8 border-t border-dark-border flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-gray-500 text-sm">© 2024 NexusAI. All rights reserved.</p>
+                <div class="flex items-center gap-4">
+                    <span class="text-gray-500 text-sm">Made with ❤️ for builders everywhere</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+        
+        // Countdown Timer
+        function startCountdown() {
+            let hours = 48;
+            let minutes = 0;
+            let seconds = 0;
+            
+            const hoursEl = document.getElementById('countdown-hours');
+            const minutesEl = document.getElementById('countdown-minutes');
+            const secondsEl = document.getElementById('countdown-seconds');
+            
+            setInterval(() => {
+                if (seconds === 0) {
+                    if (minutes === 0) {
+                        if (hours === 0) {
+                            // Reset for demo
+                            hours = 48;
+                            minutes = 0;
+                            seconds = 0;
+                        } else {
+                            hours--;
+                            minutes = 59;
+                            seconds = 59;
+                        }
+                    } else {
+                        minutes--;
+                        seconds = 59;
+                    }
+                } else {
+                    seconds--;
+                }
+                
+                hoursEl.textContent = hours.toString().padStart(2, '0');
+                minutesEl.textContent = minutes.toString().padStart(2, '0');
+                secondsEl.textContent = seconds.toString().padStart(2, '0');
+            }, 1000);
+        }
+        
+        startCountdown();
+        
+        // Confetti Effect
+        function triggerConfetti() {
+            const colors = ['#00f5ff', '#b400ff', '#ff00aa', '#00ff88', '#0080ff', '#ff6600'];
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 20);
+            }
+        }
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
