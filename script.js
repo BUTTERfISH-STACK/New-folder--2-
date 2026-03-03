@@ -157,6 +157,13 @@ function updateCVSteps() {
     }
 }
 
+// Re-run AI analysis when CV data changes (for step 5)
+function refreshAIEnhancement() {
+    if (state.currentCVStep === 5) {
+        runAIEnhancement();
+    }
+}
+
 function saveCVData() {
     // Personal Details
     state.cvData.personal = {
@@ -1103,17 +1110,17 @@ function runAIEnhancement() {
     // Gather CV data from form
     const cvText = buildCVTextFromForm();
     
-    if (!cvText || cvText.trim().length < 30) {
-        // Not enough data, show placeholder
-        return;
-    }
-    
     // Show analyzing indicator
     const aiSuggestionsContainer = document.querySelector('.ai-suggestions');
     const keywordSuggestionsContainer = document.getElementById('keywordSuggestions');
     
     if (aiSuggestionsContainer) {
-        aiSuggestionsContainer.innerHTML = '<div style="text-align:center;padding:20px;"><span>Analyzing your CV...</span></div>';
+        aiSuggestionsContainer.innerHTML = `
+            <div class="ai-analyzing">
+                <div class="analyzing-spinner"></div>
+                <span>Analyzing your CV with AI...</span>
+            </div>
+        `;
     }
     
     // Run analysis with a slight delay for UX
@@ -1135,11 +1142,30 @@ function runAIEnhancement() {
                 updateKeywordSuggestions(results);
             }
             
+            // Show success toast
+            showToast('CV Analysis Complete!');
+            
         } catch (error) {
             console.error('AI Enhancement error:', error);
-            // Keep default suggestions on error
+            // Show error state with fallback suggestions
+            if (aiSuggestionsContainer) {
+                aiSuggestionsContainer.innerHTML = `
+                    <div class="ai-suggestion-item">
+                        <div class="ai-badge">AI Suggestion</div>
+                        <p>Add quantifiable achievements to stand out. Use numbers like "40% increase" or "$100K saved".</p>
+                    </div>
+                    <div class="ai-suggestion-item">
+                        <div class="ai-badge">AI Suggestion</div>
+                        <p>Include relevant keywords from job descriptions to pass ATS systems.</p>
+                    </div>
+                    <div class="ai-suggestion-item">
+                        <div class="ai-badge">AI Suggestion</div>
+                        <p>Keep your CV concise - 2 pages maximum for experienced professionals.</p>
+                    </div>
+                `;
+            }
         }
-    }, 300);
+    }, 500);
 }
 
 // Build CV text from form data
