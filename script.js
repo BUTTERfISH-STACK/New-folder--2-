@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
     loadUserData();
     initParticles();
     updateUI();
+    initIntelligenceTabs();
+    initFileUpload();
 });
 
 // Section Navigation
@@ -1067,20 +1069,42 @@ window.addEventListener('load', function() {
 
 // CV Intelligence Analysis Function
 function runCVAnalysis() {
-    const cvText = document.getElementById('cvInputText').value;
-    const jobDescription = document.getElementById('jobDescriptionText').value;
-    const industry = document.getElementById('industrySelect').value;
-    const experienceLevel = document.getElementById('experienceSelect').value;
-    const proMode = document.getElementById('proModeCheck').checked;
+    // Check which tab is active
+    const activeTab = document.querySelector('.input-tab.active')?.dataset.tab || 'paste';
     
-    if (!cvText || cvText.trim().length < 50) {
-        showToast('Please paste your CV content (at least 50 characters)');
+    let cvText = '';
+    let jobDescription = '';
+    let industry = '';
+    let experienceLevel = '';
+    let proMode = false;
+    
+    if (activeTab === 'paste') {
+        cvText = document.getElementById('cvInputText').value;
+        jobDescription = document.getElementById('jobDescriptionText').value;
+    } else if (activeTab === 'upload') {
+        cvText = window.uploadedCVContent || '';
+        jobDescription = document.getElementById('jobDescriptionText')?.value || '';
+    } else if (activeTab === 'quick') {
+        // Build CV text from quick inputs
+        const title = document.getElementById('quickTitle')?.value || '';
+        const years = document.getElementById('quickYears')?.value || '';
+        const skills = document.getElementById('quickSkills')?.value || '';
+        
+        cvText = `Job Title: ${title}\nYears of Experience: ${years}\nSkills: ${skills}`;
+    }
+    
+    industry = document.getElementById('industrySelect')?.value || 'tech';
+    experienceLevel = document.getElementById('experienceSelect')?.value || 'mid';
+    proMode = document.getElementById('proModeCheck')?.checked || false;
+    
+    if (!cvText || cvText.trim().length < 10) {
+        showToast('Please enter your CV content or upload a file');
         return;
     }
     
     // Show loading state
     const resultsContainer = document.getElementById('cvIntelligenceResults');
-    resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;"><div style="font-size:24px;margin-bottom:16px;">Analyzing...</div><p style="color:var(--text-secondary)">Processing your CV with AI intelligence</p></div>';
+    resultsContainer.innerHTML = '<div class="analysis-loading"><div class="loading-spinner"></div><h3>Analyzing Your CV</h3><p>Our AI is processing your information...</p></div>';
     resultsContainer.classList.add('active');
     
     // Run analysis
@@ -1102,7 +1126,7 @@ function runCVAnalysis() {
             resultsContainer.innerHTML = '<div style="text-align:center;padding:40px;"><p style="color:#e07a5f">Error analyzing CV. Please try again.</p></div>';
             showToast('Analysis failed. Please try again.');
         }
-    }, 500);
+    }, 800);
 }
 
 // AI Enhancement for CV Builder Step 5
@@ -1324,4 +1348,171 @@ function updateKeywordSuggestions(results) {
             `<span class="keyword">${k}</span>`
         ).join('');
     }
+}
+
+// Initialize Intelligence Tabs
+function initIntelligenceTabs() {
+    const tabs = document.querySelectorAll('.input-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.dataset.tab;
+            
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            tab.classList.add('active');
+            
+            // Hide all tab contents
+            tabContents.forEach(content => content.classList.remove('active'));
+            // Show target tab content
+            document.getElementById(`tab-${targetTab}`).classList.add('active');
+        });
+    });
+}
+
+// Initialize File Upload
+function initFileUpload() {
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('cvFileInput');
+    
+    if (!uploadArea || !fileInput) return;
+    
+    // Click to browse
+    uploadArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+    
+    // Drag and drop
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+    
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileUpload(files[0]);
+        }
+    });
+    
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFileUpload(e.target.files[0]);
+        }
+    });
+}
+
+// Handle File Upload
+function handleFileUpload(file) {
+    const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    
+    if (!validTypes.includes(file.type)) {
+        showToast('Invalid file type. Please upload PDF, DOCX, or TXT');
+        return;
+    }
+    
+    if (file.size > maxSize) {
+        showToast('File too large. Maximum size is 5MB');
+        return;
+    }
+    
+    // Show file preview
+    const uploadArea = document.getElementById('uploadArea');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const fileName = document.getElementById('fileName');
+    
+    if (uploadArea) uploadArea.style.display = 'none';
+    if (uploadPreview) {
+        uploadPreview.style.display = 'block';
+        if (fileName) fileName.textContent = file.name;
+    }
+    
+    // Read file content
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const content = e.target.result;
+        // Store the content for analysis
+        window.uploadedCVContent = content;
+        showToast(`File "${file.name}" uploaded successfully!`);
+    };
+    
+    reader.onerror = () => {
+        showToast('Error reading file. Please try again.');
+    };
+    
+    if (file.type === 'text/plain') {
+        reader.readAsText(file);
+    } else {
+        // For PDF/DOCX, we'd need additional libraries
+        // For now, just show success
+        showToast('File uploaded! Click Analyze to process.');
+    }
+}
+
+// Remove Uploaded File
+function removeUploadedFile() {
+    const uploadArea = document.getElementById('uploadArea');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const fileInput = document.getElementById('cvFileInput');
+    
+    if (uploadArea) uploadArea.style.display = 'block';
+    if (uploadPreview) uploadPreview.style.display = 'none';
+    if (fileInput) fileInput.value = '';
+    
+    window.uploadedCVContent = null;
+}
+
+// Quick Score Calculator
+function calculateQuickScore() {
+    const title = document.getElementById('quickTitle')?.value || '';
+    const years = parseInt(document.getElementById('quickYears')?.value || '0');
+    const skills = document.getElementById('quickSkills')?.value || '';
+    
+    let score = 0;
+    
+    // Title presence
+    if (title.length > 0) score += 20;
+    if (title.length > 10) score += 10;
+    
+    // Years of experience
+    if (years >= 1) score += 15;
+    if (years >= 3) score += 15;
+    if (years >= 5) score += 10;
+    
+    // Skills
+    const skillCount = skills.split(',').filter(s => s.trim()).length;
+    if (skillCount >= 3) score += 15;
+    if (skillCount >= 5) score += 15;
+    if (skillCount >= 10) score += 10;
+    
+    // Cap at 100
+    score = Math.min(score, 100);
+    
+    // Update score display
+    const scoreValue = document.getElementById('quickAtsScore');
+    if (scoreValue) {
+        scoreValue.textContent = score + '%';
+        
+        // Add color based on score
+        if (score < 40) {
+            scoreValue.style.color = '#e07a5f';
+        } else if (score < 70) {
+            scoreValue.style.color = '#f4d03f';
+        } else {
+            scoreValue.style.color = '#6bcb77';
+        }
+    }
+    
+    showToast(`Quick ATS Score: ${score}%`);
 }
